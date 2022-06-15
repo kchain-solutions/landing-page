@@ -82,17 +82,19 @@ function Navbar() {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" >
             <Container maxWidth="xl">
-                <Toolbar disableGutters>
+                <Toolbar disableGutters sx={{ height: 164 }}>
 
                     <Box
                         component="img"
                         sx={{
-                            height: 172,
-                            width: 172
+                            display: 'flex', flexWrap: 'wrap',
+                            alignItems: 'center',
+                            height: 128,
+                            width: 128,
+                            mr: "2rem" 
                         }}
-                        alt="The house from the offer."
                         src={logo.src}
                     />
                     <Typography
@@ -169,7 +171,7 @@ function Navbar() {
                     </Typography>
 
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, flexDirection: "row-reverse" }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, flexDirection: "row-reverse"}}>
                         {loadAnchorsOnNavabar()}
                     </Box>
 

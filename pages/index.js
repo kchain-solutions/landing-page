@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import Navbar from "../components/Navbar";
 import lang from "../lang/index.json"
 import Box from '@mui/material/Box';
+import { Container } from "@mui/system";
 
 
 function Index() {
@@ -21,9 +22,10 @@ function Index() {
         <>
             <Layout>
                 <Navbar />
-                <Box>
-                {localState?.contact}
-                </Box>
+                <Container>
+                    {localState?.contact}
+                </Container>
+
             </Layout>
         </>);
 }
