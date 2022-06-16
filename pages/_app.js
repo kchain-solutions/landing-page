@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { GlobalContext } from "../components/GlobalContext";
 
+
+
 function MyApp({ Component, pageProps }) {
 
     const [globalState, setGlobalState] = useState({
@@ -12,7 +14,8 @@ function MyApp({ Component, pageProps }) {
 
  
     useEffect(() => {
-            console.log('_app.js global state', );
+            console.log('_app.js global loaded state' );
+            console.log('Environment variables', process.env.MONGODB_CONN);
         }, []);
 
     return (<>

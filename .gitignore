@@ -169,4 +169,5 @@ About
 
 settings.json
 credential.json
+.env
 lottery-contract/settings.json
