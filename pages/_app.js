@@ -8,6 +8,7 @@ function MyApp({ Component, pageProps }) {
     const [globalState, setGlobalState] = useState({
         language: "en",
         apiBaseUrl: process.env.API_BASE_URL,
+        currentPage: "index.js",
         isConnected: false,
         web3: undefined,
         wallet: ''
@@ -20,7 +21,7 @@ function MyApp({ Component, pageProps }) {
 
     return (<>
         <GlobalContext.Provider value={{ globalState, setGlobalState }}>
-            <title> Aliumind  </title>
+            <title> Karma  </title>
             <Component {...pageProps} />
         </GlobalContext.Provider>
     </>);

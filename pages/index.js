@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { GlobalContext } from "../components/GlobalContext";
-import Layout from "../components/Layout";
+import CustomTheme from "../components/CustomTheme";
 import Navbar from "../components/Navbar";
+import Body from "../components/BodyLandingPage";
 import lang from "../lang/index.json"
-import Box from '@mui/material/Box';
+
 import { Container } from "@mui/system";
 
 const axios = require('axios').default;
@@ -11,7 +12,7 @@ const axios = require('axios').default;
 function Index() {
 
     const [localState, setLocalState] = useState({
-        
+
     });
     const { globalState, setGlobalState } = useContext(GlobalContext);
 
@@ -25,10 +26,10 @@ function Index() {
             });
 
         } catch (error) {
-            console.log('indexjs error',error)
+            console.log('indexjs error', error)
         }
-        
-    } 
+
+    }
     useEffect(() => {
         setLocalState({
             service1: lang[globalState.language]["service1"]
@@ -36,18 +37,15 @@ function Index() {
 
         console.log('Index page loaded');
         console.log(globalState.apiBaseUrl);
-        axiosCall(globalState.apiBaseUrl + 'hello')   
+        axiosCall(globalState.apiBaseUrl + 'hello')
     }, []);
 
     return (
         <>
-            <Layout>
+            <CustomTheme>
                 <Navbar />
-                <Container>
-                    {localState?.axiosData?.text}
-                </Container>
-
-            </Layout>
+                <Body />
+            </CustomTheme>
         </>);
 }
 

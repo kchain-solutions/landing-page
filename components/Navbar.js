@@ -30,21 +30,21 @@ function Navbar() {
     const { globalState, setGlobalState } = useContext(GlobalContext);
 
     const loadAnchorsOnNavabar = () => {
-        return anchors.map((page) => (
+        return anchors.map((elem) => (
             <Button
-                key={page}
+                key={elem.name}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
             >
-                {page}
+                {elem.name}
             </Button>
         ))
     }
 
     const loadAnchorsOnMenu = () => {
-        return anchors.map((page) => (
-            <MenuItem key={page} onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">{page}</Typography>
+        return anchors.map((elem) => (
+            <MenuItem key={elem.name} onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">{elem.name}</Typography>
             </MenuItem>
         ))
     }
@@ -53,10 +53,17 @@ function Navbar() {
         setLocalState({
             title: lang[globalState.language]['title'],
         })
-        anchors.push(lang[globalState.language]['mission']);
-        anchors.push(lang[globalState.language]['services']);
-        anchors.push(lang[globalState.language]['contact-us'])
 
+        anchors.push({
+            name: lang[globalState.language]['contact-us'],
+            link:''
+        })
+
+        if(globalState.currentPage == 'index.js'){
+            anchors.push({name:lang[globalState.language]['services'], link:''});
+            anchors.push({name:lang[globalState.language]['mission'], link:''});
+        }
+       
         console.log(logo);
         loadAnchorsOnNavabar();
         loadAnchorsOnMenu();

@@ -21,7 +21,7 @@ const theme = createTheme({
   },
 });
 
-function Layout (props) {
+function CustomTheme (props) {
     return <>
         <ThemeProvider theme={theme}>
             {props.children}
@@ -29,4 +29,4 @@ function Layout (props) {
     </>
 }
 
-export default Layout;
+export default CustomTheme;
