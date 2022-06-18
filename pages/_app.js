@@ -17,6 +17,7 @@ function MyApp({ Component, pageProps }) {
 
     useEffect(() => {
         console.log('_app.js global loaded state');
+        cosole.log(process.env.API_BASE_URL)
     }, []);
 
     return (<>
