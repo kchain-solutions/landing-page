@@ -6,7 +6,7 @@ export default function Mission() {
     return (<>
         <Container>
             <Box>
-                <Typography variant="h2"> THE MISSION </Typography>
+                <Typography variant="h2" sx={{mb:5, mt:5}}> THE MISSION </Typography>
                 <Typography variant="h5">Everyone should have the chance to handle their tokens and their tokenomics, as now they can manage a blog.</Typography>
                 <Typography variant="body1">create a valuable connection between Subscribers and Content Creators.</Typography>
                 <Typography variant="body1">The mission consists of helping the Creators get funds efficiently, distributing personal tokens/NFTs, and correlating the value of their brand to the value of the tokens. Besides, Subscribers participate in the creation process, investing in the creators, which they believe.</Typography>

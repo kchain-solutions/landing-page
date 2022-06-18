@@ -5,7 +5,7 @@ import Services from "./Services";
 
 export default function Body() {
     return(<>
-        <Container>
+        <Container maxWidth="xl">
             <Mission/>
             <Services />
         </Container>
