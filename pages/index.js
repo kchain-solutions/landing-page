@@ -46,6 +46,7 @@ function Index(props) {
                 <Navbar />
                 <Body />
                 {props.url}
+                <p>{localState?.axiosData?.text}</p>
             </CustomTheme>
         </>);
 }
