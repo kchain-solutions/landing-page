@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { GlobalContext } from "../components/GlobalContext";
 
 
-
 function MyApp({ Component, pageProps }) {
 
     const [globalState, setGlobalState] = useState({
@@ -17,7 +16,7 @@ function MyApp({ Component, pageProps }) {
 
     useEffect(() => {
         console.log('_app.js global loaded state');
-        console.log(process.env)
+        console.log('env variable ',process.env.API_BASE_URL)
     }, []);
 
     return (<>

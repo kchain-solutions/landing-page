@@ -9,7 +9,7 @@ import { Container } from "@mui/system";
 
 const axios = require('axios').default;
 
-function Index() {
+function Index(props) {
 
     const [localState, setLocalState] = useState({
 
@@ -36,8 +36,8 @@ function Index() {
         });
 
         console.log('Index page loaded');
-        console.log(globalState.apiBaseUrl);
-        axiosCall(globalState.apiBaseUrl + 'hello')
+        console.log('apiBaseUrl', props.url);
+        axiosCall(props.url+ 'hello')
     }, []);
 
     return (
@@ -45,9 +45,21 @@ function Index() {
             <CustomTheme>
                 <Navbar />
                 <Body />
+                {props.url}
             </CustomTheme>
         </>);
 }
 
 
+
 export default Index
+
+export async function getStaticProps() {
+    const url = process.env.API_BASE_URL 
+    return{
+        props: {
+            url
+        }
+    }
+  }
+  
