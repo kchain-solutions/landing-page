@@ -37,7 +37,7 @@ function Index(props) {
 
         console.log('Index page loaded');
         console.log('apiBaseUrl', props.url);
-        axiosCall('/api/hello')
+        axiosCall(props.url + '/api/hello')
     }, []);
 
     return (
