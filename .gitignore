@@ -169,5 +169,7 @@ About
 
 settings.json
 credential.json
-.env
+.env.local
 lottery-contract/settings.json
+
+.openzeppelin/.session
