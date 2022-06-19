@@ -16,28 +16,28 @@ function Index(props) {
     });
     const { globalState, setGlobalState } = useContext(GlobalContext);
 
-    const axiosCall = async (url) => {
-        try {
-            let response = await axios.get(url);
-            console.log(response.data);
-            setLocalState({
-                ...localState,
-                axiosData: response.data
-            });
+    // const axiosCall = async (url) => {
+    //     try {
+    //         let response = await axios.get(url);
+    //         console.log(response.data);
+    //         setLocalState({
+    //             ...localState,
+    //             axiosData: response.data
+    //         });
 
-        } catch (error) {
-            console.log('indexjs error', error)
-        }
+    //     } catch (error) {
+    //         console.log('indexjs error', error)
+    //     }
 
-    }
+    // }
     useEffect(() => {
         setLocalState({
             service1: lang[globalState.language]["service1"]
         });
 
         console.log('Index page loaded');
-        console.log('apiBaseUrl', props.url);
-        axiosCall(props.url + '/api/hello')
+        // console.log('apiBaseUrl', props.url);
+        // axiosCall(props.url + '/api/hello')
     }, []);
 
     return (
@@ -46,7 +46,6 @@ function Index(props) {
                 <Navbar />
                 <Body />
                 {props.url}
-                <p>{localState?.axiosData?.text}</p>
             </CustomTheme>
         </>);
 }
