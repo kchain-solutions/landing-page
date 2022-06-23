@@ -7,11 +7,8 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import { Divider } from '@mui/material';
 
 import logo from "../images/logo.png"
@@ -21,23 +18,26 @@ import { GlobalContext } from "../components/GlobalContext"
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-const anchors = [];
+let anchors = [];
 
-function Navbar() {
+export default function Navbar(props) {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [localState, setLocalState] = useState();
+
     const { globalState, setGlobalState } = useContext(GlobalContext);
 
     const loadAnchorsOnNavabar = () => {
         return anchors.map((elem) => (
-            <Button
-                key={elem.name}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-                {elem.name}
-            </Button>
+            <a href={elem.link}>
+                <Button
+                    key={elem.name}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                    {elem.name}
+                </Button>
+            </a>
         ))
     }
 
@@ -54,17 +54,24 @@ function Navbar() {
             title: lang[globalState.language]['title'],
         })
 
-        anchors.push({
-            name: lang[globalState.language]['contact-us'],
-            link:''
-        })
+ 
 
-        if(globalState.currentPage == 'index.js'){
-            anchors.push({name:lang[globalState.language]['services'], link:''});
-            anchors.push({name:lang[globalState.language]['mission'], link:''});
+        if (globalState.currentPage == 'index.js') {
+            anchors.splice(0);
+            anchors.push({
+                name: lang[globalState.language]['contact-us'],
+                link: props.baseUrl + '/contact'
+            },
+                {
+                    name: 'Demo',
+                    link: props.baseUrl + '/ethereum'
+                })
+            anchors.push({ name: lang[globalState.language]['services'], link: '' });
+            anchors.push({ name: lang[globalState.language]['mission'], link: '' });
         }
-       
-        console.log(logo);
+
+
+        console.log('base url', props.baseUrl);
         loadAnchorsOnNavabar();
         loadAnchorsOnMenu();
 
@@ -100,7 +107,7 @@ function Navbar() {
                             alignItems: 'center',
                             height: 128,
                             width: 128,
-                            mr: "2rem" 
+                            mr: "2rem"
                         }}
                         src={logo.src}
                     />
@@ -178,7 +185,7 @@ function Navbar() {
                     </Typography>
 
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, flexDirection: "row-reverse"}}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, flexDirection: "row-reverse" }}>
                         {loadAnchorsOnNavabar()}
                     </Box>
 
@@ -216,4 +223,4 @@ function Navbar() {
         </AppBar>
     );
 };
-export default Navbar;
+

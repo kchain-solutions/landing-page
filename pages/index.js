@@ -32,8 +32,14 @@ function Index(props) {
     // }
     useEffect(() => {
         setLocalState({
+            ...localState,
             service1: lang[globalState.language]["service1"]
         });
+
+        setGlobalState({...globalState, 
+            currentPage: 'index.js',
+            baseUrl: props.baseUrl
+        })
 
         console.log('Index page loaded');
         // console.log('apiBaseUrl', props.url);
@@ -43,9 +49,9 @@ function Index(props) {
     return (
         <>
             <CustomTheme>
-                <Navbar />
+                <Navbar baseUrl={props.baseUrl}/>
                 <Body />
-                {props.url}
+                {globalState?.baseUrl}
             </CustomTheme>
         </>);
 }
@@ -55,10 +61,10 @@ function Index(props) {
 export default Index
 
 export async function getStaticProps() {
-    const url = process.env.API_BASE_URL 
+    const baseUrl = process.env.API_BASE_URL 
     return{
         props: {
-            url
+            baseUrl
         }
     }
   }
