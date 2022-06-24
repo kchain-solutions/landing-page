@@ -12,7 +12,7 @@ const GameAbi = fs.readJSONSync(
     path.resolve(__dirname, '../ethereum', 'build', 'GameAbi.json')
 )
 
-const infuraEndpoint = process.env.RINKEBY_INFURA_ENDPOINT
+const infuraEndpoint = process.env.POLYGON_TESTNET_ENDPOINT
 const walletPassphrase = process.env.WALLET_PASSPHRASE
 
 const provider = new HDWalletProvider(
