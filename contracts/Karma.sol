@@ -10,20 +10,40 @@ contract KarmaContractFactory{
         uint256 price;
         string description;
         string name;
+        address owner;
         address contractAddress;
         uint96 royaltiesPerc;
         uint96 cashbackPerc;
-        address karmaContractAddress;
+        bool isOpened;
     }
 
-    mapping(address => KarmaContractDetails[]) public karmaContractMapper;
+    mapping(address => KarmaContractDetails[]) public karmaContractDetailsMapper;
 
-    function createKarmaContract() public {
+    function createKarmaContract(string memory nftName, string memory symbol,
+        uint256 productprice, uint256 setupMintingLimit, uint96 tokenMaxUsage,
+        uint96 campaignRoyaltiesPerc, uint96 campaignCashbackPerc) public returns (address){
 
+        address karmaContractAddress = address(new KarmaContract(msg.sender, nftName, symbol, productprice, setupMintingLimit, tokenMaxUsage, campaignRoyaltiesPerc, campaignCashbackPerc));
+
+        KarmaContractDetails memory kcd = KarmaContractDetails({
+           price: productprice,
+           name: nftName,
+           description: '',
+           owner: msg.sender,
+           contractAddress: karmaContractAddress, 
+           royaltiesPerc: campaignRoyaltiesPerc,
+           cashbackPerc:campaignCashbackPerc,
+           isOpened: true
+        });
+
+        KarmaContractDetails[] storage KarmaContractDetailsCollection = karmaContractDetailsMapper[msg.sender];
+        KarmaContractDetailsCollection.push(kcd);
+
+        return karmaContractAddress;
     }
 
-    function getDeployedKarmaContractForAddress() public {
-
+    function getDeployedKarmaContractForAddress() public view returns (KarmaContractDetails[] memory ){
+        return karmaContractDetailsMapper[msg.sender];
     }
 }
 
@@ -50,7 +70,7 @@ contract KarmaContract is ERC721URIStorage, AccessControl  {
     
     uint256 public mintingLimit;
 
-    constructor(string memory nftName, string memory symbol,
+    constructor(address owner, string memory nftName, string memory symbol,
         uint256 productprice, uint256 setupMintingLimit, uint96 tokenMaxUsage,
         uint96 campaignRoyaltiesPerc, uint96 campaignCashbackPerc) 
             ERC721(nftName, symbol) payable {
@@ -62,7 +82,7 @@ contract KarmaContract is ERC721URIStorage, AccessControl  {
                 royaltiesPerc = campaignRoyaltiesPerc;
                 cashbackPerc = campaignCashbackPerc;
 
-                admin = payable(msg.sender);
+                admin = payable(owner);
                 mintingLimit = setupMintingLimit;
     }
 
