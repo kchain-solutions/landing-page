@@ -6,11 +6,11 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract KarmaContractFactory{
 
+    address contractOwner;
+
     struct KarmaContractDetails{
         uint256 price;
-        string description;
         string name;
-        address owner;
         address contractAddress;
         uint96 royaltiesPerc;
         uint96 cashbackPerc;
@@ -19,24 +19,26 @@ contract KarmaContractFactory{
 
     mapping(address => KarmaContractDetails[]) public karmaContractDetailsMapper;
 
-    function createKarmaContract(string memory nftName, string memory symbol,
-        uint256 productprice, uint256 setupMintingLimit, uint96 tokenMaxUsage,
-        uint96 campaignRoyaltiesPerc, uint96 campaignCashbackPerc) public returns (address){
+    constructor() payable{
+        contractOwner = msg.sender;
+    }
 
-        address karmaContractAddress = address(new KarmaContract(msg.sender, nftName, symbol, productprice, setupMintingLimit, tokenMaxUsage, campaignRoyaltiesPerc, campaignCashbackPerc));
+    function createKarmaContract(string memory aname, string memory asymbol,
+        uint96 aproductprice, uint256 asetupMintingLimit, uint96 atokenMaxUsage,
+        uint96 acampaignRoyaltiesPerc, uint96 acampaignCashbackPerc) public payable returns (address){
+
+        address karmaContractAddress = address(new KarmaContract(contractOwner, aname, asymbol, aproductprice, asetupMintingLimit, atokenMaxUsage, acampaignRoyaltiesPerc, acampaignCashbackPerc));
 
         KarmaContractDetails memory kcd = KarmaContractDetails({
-           price: productprice,
-           name: nftName,
-           description: '',
-           owner: msg.sender,
+           price: aproductprice,
+           name: aname, 
            contractAddress: karmaContractAddress, 
-           royaltiesPerc: campaignRoyaltiesPerc,
-           cashbackPerc:campaignCashbackPerc,
+           royaltiesPerc: acampaignRoyaltiesPerc,
+           cashbackPerc: acampaignCashbackPerc,
            isOpened: true
         });
 
-        KarmaContractDetails[] storage KarmaContractDetailsCollection = karmaContractDetailsMapper[msg.sender];
+        KarmaContractDetails[] storage KarmaContractDetailsCollection = karmaContractDetailsMapper[contractOwner];
         KarmaContractDetailsCollection.push(kcd);
 
         return karmaContractAddress;
@@ -70,20 +72,20 @@ contract KarmaContract is ERC721URIStorage, AccessControl  {
     
     uint256 public mintingLimit;
 
-    constructor(address owner, string memory nftName, string memory symbol,
-        uint256 productprice, uint256 setupMintingLimit, uint96 tokenMaxUsage,
-        uint96 campaignRoyaltiesPerc, uint96 campaignCashbackPerc) 
-            ERC721(nftName, symbol) payable {
+    constructor(address aowner, string memory anftName, string memory asymbol,
+        uint256 aproductprice, uint256 asetupMintingLimit, uint96 atokenMaxUsage,
+        uint96 acampaignRoyaltiesPerc, uint96 acampaignCashbackPerc) 
+            ERC721(anftName, asymbol) payable {
                 _setupRole(ADMIN_ROLE, msg.sender);
                 _setupRole(MINTER_ROLE, msg.sender);
                 
-                productPrice = productprice;
-                tokenMaxUsages= tokenMaxUsage;
-                royaltiesPerc = campaignRoyaltiesPerc;
-                cashbackPerc = campaignCashbackPerc;
+                productPrice = aproductprice;
+                tokenMaxUsages= atokenMaxUsage;
+                royaltiesPerc = acampaignRoyaltiesPerc;
+                cashbackPerc = acampaignCashbackPerc;
 
-                admin = payable(owner);
-                mintingLimit = setupMintingLimit;
+                admin = payable(aowner);
+                mintingLimit = asetupMintingLimit;
     }
 
     function mintItem(address player, string memory uri) 
