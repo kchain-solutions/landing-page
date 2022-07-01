@@ -16,11 +16,12 @@ export default function Ethereum(props) {
             ...globalState,
             currentPage:"ethereum.js"
         })
+        globalState.web3;
     }, []);
     
     return <>
         <CustomTheme>
-            <EthereumNavbar/>
+            <EthereumNavbar value={props.campaignFactoryAddress}/>
             <Typography variant="h3"> Ethereum Demo </Typography>
             <Typography variant="h5"> WIP </Typography>
         </CustomTheme>
@@ -28,10 +29,12 @@ export default function Ethereum(props) {
 }
 
 export async function getStaticProps() {
-    const baseUrl = process.env.API_BASE_URL 
+    const baseUrl = process.env.API_BASE_URL; 
+    const campaignFactoryAddress = process.env.CAMPAIGN_FACTORY_ADDRESS_ETH;
     return{
         props: {
-            baseUrl
+            baseUrl,
+            campaignFactoryAddress
         }
     }
   }

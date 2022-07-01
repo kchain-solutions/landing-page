@@ -109,20 +109,20 @@ describe('Contract deploy test', async () => {
 
 describe('Karma contract instance', () => {
     
-    it('Check contract owner', async () => {
+    it('Verify contract owner', async () => {
         let adminRis = await karmaContractInstance.methods.admin().call({from: visibilityProvider});
         assert.equal(adminRis, admin);
     });
 
-    it('', async () => {
+    it('Create a NFT test', async () => {
 
     });
 
-    it('', async () => {
+    it('Cash out test', async () => {
 
     });
 
-    it('', async () => {
+    it('Transfer token test', async () => {
 
     });
 

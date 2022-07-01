@@ -2,14 +2,14 @@ import { Grid, Box, AppBar, Toolbar, Typography, Container, Divider } from '@mui
 import React from 'react';
 import ConnectionButton from './ConnectionButton';
 import { useEffect, useState, useContext } from 'react';
-import CampaignFactoryInstance from '../ethereum/factory';
+import CampaignFactoryInstance from '../ethereum/CampaignFactoryInstance';
 import { GlobalContext } from "../components/GlobalContext";
 import Web3 from "web3";
 import logo from "../images/logo.png"
 
 
 
-export default function EthereumNavbar () {
+export default function EthereumNavbar (props) {
 
 
     const { globalState, setGlobalState } = useContext(GlobalContext);
@@ -17,7 +17,7 @@ export default function EthereumNavbar () {
     const loadState = async (stateSession) => {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
         let web3 = await new Web3(window.ethereum);
-        let campaignFactoryInstance = await CampaignFactoryInstance(web3);
+        let campaignFactoryInstance = await CampaignFactoryInstance(web3, props.campaignFactoryAddress);
         stateSession['web3'] = web3;
         stateSession['campaignFactoryInstance'] = campaignFactoryInstance;
         console.log('loaded state', stateSession)
@@ -43,7 +43,7 @@ export default function EthereumNavbar () {
 
         if (web3) {
             let account = await web3.eth.getAccounts();
-            let campaignFactoryInstance = await CampaignFactoryInstance(web3);
+            let campaignFactoryInstance = await CampaignFactoryInstance(web3, props.campaignFactoryAddress);
             let newState = {
                 isConnected: true,
                 wallet: account[0],
