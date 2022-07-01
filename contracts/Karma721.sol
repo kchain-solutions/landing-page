@@ -8,48 +8,27 @@ contract KarmaContractFactory{
 
     address contractOwner;
 
-    struct KarmaContractDetails{
-        uint256 price;
-        string name;
-        address contractAddress;
-        uint96 royaltiesPerc;
-        uint96 cashbackPerc;
-        bool isOpened;
-    }
-
-    mapping(address => KarmaContractDetails[]) public karmaContractDetailsMapper;
+    mapping(address => address[]) public karmaContractDetailsMapper;
 
     constructor() payable{
         contractOwner = msg.sender;
     }
 
-    function createKarmaContract(string memory aname, string memory asymbol,
-        uint96 aproductprice, uint256 asetupMintingLimit, uint96 atokenMaxUsage,
-        uint96 acampaignRoyaltiesPerc, uint96 acampaignCashbackPerc) public payable returns (address){
-
-        address karmaContractAddress = address(new KarmaContract(contractOwner, aname, asymbol, aproductprice, asetupMintingLimit, atokenMaxUsage, acampaignRoyaltiesPerc, acampaignCashbackPerc));
-
-        KarmaContractDetails memory kcd = KarmaContractDetails({
-           price: aproductprice,
-           name: aname, 
-           contractAddress: karmaContractAddress, 
-           royaltiesPerc: acampaignRoyaltiesPerc,
-           cashbackPerc: acampaignCashbackPerc,
-           isOpened: true
-        });
-
-        KarmaContractDetails[] storage KarmaContractDetailsCollection = karmaContractDetailsMapper[contractOwner];
-        KarmaContractDetailsCollection.push(kcd);
-
-        return karmaContractAddress;
+    function createKarmaContract(string memory name, string memory symbol,
+        uint96 productprice, uint256 setupMintingLimit, uint96 tokenMaxUsage,
+        uint96 campaignRoyaltiesPerc, uint96 campaignCashbackPerc) public payable{
+            address karmaContractAddress = address(new KarmaContract(contractOwner, name, symbol, productprice, setupMintingLimit, tokenMaxUsage, campaignRoyaltiesPerc, campaignCashbackPerc));
+            address[] storage KarmaContractDetailsCollection = karmaContractDetailsMapper[contractOwner];
+            KarmaContractDetailsCollection.push(karmaContractAddress);
     }
 
-    function getDeployedKarmaContractForAddress() public view returns (KarmaContractDetails[] memory ){
+    function getDeployedKarmaContractForAddress() public view returns (address[] memory ){
         return karmaContractDetailsMapper[msg.sender];
     }
 }
 
 contract KarmaContract is ERC721URIStorage, AccessControl  {
+    
     using Counters for Counters.Counter;
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
@@ -67,29 +46,36 @@ contract KarmaContract is ERC721URIStorage, AccessControl  {
         uint256 usageCounter;
     }
 
+    struct SellTokenFlags {
+        uint256 price;
+        bool payed;
+        bool approved;
+    }
+
     mapping(uint256 => address payable) public royaltiesAddressMapper;
     mapping(uint256 => TokenInstance) public tokenInstanceMapper;
     
     uint256 public mintingLimit;
 
-    constructor(address aowner, string memory anftName, string memory asymbol,
-        uint256 aproductprice, uint256 asetupMintingLimit, uint96 atokenMaxUsage,
-        uint96 acampaignRoyaltiesPerc, uint96 acampaignCashbackPerc) 
-            ERC721(anftName, asymbol) payable {
-                _setupRole(ADMIN_ROLE, msg.sender);
-                _setupRole(MINTER_ROLE, msg.sender);
+    constructor(address owner, string memory nftName, string memory symbol,
+        uint256 productprice, uint256 setupMintingLimit, uint96 tokenMaxUsage,
+        uint96 campaignRoyaltiesPerc, uint96 campaignCashbackPerc) 
+            ERC721(nftName, symbol) payable {
+                _setupRole(ADMIN_ROLE, owner);
+                _setupRole(MINTER_ROLE, owner);
                 
-                productPrice = aproductprice;
-                tokenMaxUsages= atokenMaxUsage;
-                royaltiesPerc = acampaignRoyaltiesPerc;
-                cashbackPerc = acampaignCashbackPerc;
+                productPrice = productprice;
+                tokenMaxUsages= tokenMaxUsage;
+                royaltiesPerc = campaignRoyaltiesPerc;
+                cashbackPerc = campaignCashbackPerc;
 
-                admin = payable(aowner);
-                mintingLimit = asetupMintingLimit;
+                admin = payable(owner);
+                mintingLimit = setupMintingLimit;
     }
 
     function mintItem(address player, string memory uri) 
         public returns (uint256){
+            //Need a different permission to mint token
             require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a MINTER");
             require(mintingLimit > _tokenIds.current() + 1, 'Minted items limit reached');
             uint256 newItemId = _tokenIds.current();
@@ -131,6 +117,11 @@ contract KarmaContract is ERC721URIStorage, AccessControl  {
         address payable cashbackAddress = payable(msg.sender);
         cashbackAddress.transfer(cashback);
 
+    }
+
+    function transfer(address recipient, uint256 tokenId) public payable returns (bool) {
+        _transfer(_msgSender(), recipient, tokenId);
+      return true;
     }
 
     function supportsInterface(bytes4 interfaceId) public view override(ERC721, AccessControl) returns (bool) {

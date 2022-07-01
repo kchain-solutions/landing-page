@@ -22,8 +22,16 @@ module.exports = {
         return new HDWalletProvider(process.env.WALLET_PASSPHRASE, process.env.RINKEBY_INFURA_ENDPOINT);
       },
       network_id: 4,
-      gas: 4500000,
+      gas: 29999972,
       gasPrice: 10000000000,
+    },
+    ropsten:{
+      provider: function () {
+      return new HDWalletProvider(process.env.WALLET_PASSPHRASE, process.env.ROPSTEN_INFURA_ENDPOINT);
+    },
+    network_id: 3,
+    gas: 29999972,
+    gasPrice: 10000000000,
     }
   },
 
@@ -40,7 +48,6 @@ module.exports = {
         enabled: true,
         runs: 200
       },
-      evmVersion: "byzantium"
     }
   }
 }

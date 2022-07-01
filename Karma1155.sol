@@ -1,33 +1,33 @@
 pragma solidity ^0.8.7;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract KarmaContractFactory{
 
-    struct KarmaContractDetails{
-        uint256 price;
-        string description;
-        string name;
-        address contractAddress;
-        uint96 royaltiesPerc;
-        uint96 cashbackPerc;
-        address karmaContractAddress;
+    address contractOwner;
+
+    mapping(address => address[]) public karmaContractDetailsMapper;
+
+    constructor() payable{
+        contractOwner = msg.sender;
     }
 
-    mapping(address => KarmaContractDetails[]) public karmaContractMapper;
-
-    function createKarmaContract() public {
-
+    function createKarmaContract(string memory uri,
+        uint96 productprice, uint256 setupMintingLimit, uint96 tokenMaxUsage,
+        uint96 campaignRoyaltiesPerc, uint96 campaignCashbackPerc) public payable{
+            address karmaContractAddress = address(new KarmaContract(contractOwner, uri, productprice, setupMintingLimit, tokenMaxUsage, campaignRoyaltiesPerc, campaignCashbackPerc));
+            address[] storage KarmaContractDetailsCollection = karmaContractDetailsMapper[contractOwner];
+            KarmaContractDetailsCollection.push(karmaContractAddress);
     }
 
-    function getDeployedKarmaContractForAddress() public {
-
+    function getDeployedKarmaContractForAddress() public view returns (address[] memory ){
+        return karmaContractDetailsMapper[msg.sender];
     }
 }
 
-contract KarmaContract is ERC721URIStorage, AccessControl  {
+contract KarmaContract is ERC1155, AccessControl  {
     using Counters for Counters.Counter;
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
@@ -45,31 +45,38 @@ contract KarmaContract is ERC721URIStorage, AccessControl  {
         uint256 usageCounter;
     }
 
+    struct SellTokenFlags {
+        uint256 price;
+        bool payed;
+        bool approved;
+    }
+
     mapping(uint256 => address payable) public royaltiesAddressMapper;
     mapping(uint256 => TokenInstance) public tokenInstanceMapper;
     
     uint256 public mintingLimit;
 
-    constructor(string memory nftName, string memory symbol,
+    constructor(address owner, string memory uri,
         uint256 productprice, uint256 setupMintingLimit, uint96 tokenMaxUsage,
         uint96 campaignRoyaltiesPerc, uint96 campaignCashbackPerc) 
-            ERC721(nftName, symbol) payable {
-                _setupRole(ADMIN_ROLE, msg.sender);
-                _setupRole(MINTER_ROLE, msg.sender);
+            ERC1155(uri) payable {
+                _setupRole(ADMIN_ROLE, owner);
+                _setupRole(MINTER_ROLE, owner);
                 
                 productPrice = productprice;
                 tokenMaxUsages= tokenMaxUsage;
                 royaltiesPerc = campaignRoyaltiesPerc;
                 cashbackPerc = campaignCashbackPerc;
 
-                admin = payable(msg.sender);
+                admin = payable(owner);
                 mintingLimit = setupMintingLimit;
     }
 
-    function mintItem(address player, string memory uri) 
-        public returns (uint256){
+    function mintItem(address receiver) 
+        public payable returns (uint256){
+            //Need a different permission to mint token
             require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a MINTER");
-            require(mintingLimit > _tokenIds.current() + 1, 'Minted items limit reached');
+            require(mintingLimit > _tokenIds.current(), "Minted items limit reached");
             uint256 newItemId = _tokenIds.current();
 
             tokenInstanceMapper[newItemId] = TokenInstance({
@@ -78,9 +85,9 @@ contract KarmaContract is ERC721URIStorage, AccessControl  {
             });
 
             
-            _mint(player, newItemId);
-            _setTokenURI(newItemId, uri);
-            royaltiesAddressMapper[newItemId] = payable(player);
+            _mint(receiver, newItemId, 1, '');
+
+            royaltiesAddressMapper[newItemId] = payable(receiver);
             _tokenIds.increment();
             return newItemId;
     }
@@ -96,7 +103,7 @@ contract KarmaContract is ERC721URIStorage, AccessControl  {
 
     function payWithNft(uint256 tokenId) public payable{
         require(msg.value >= productPrice, "not enought money sent");
-        require(ownerOf(tokenId) == msg.sender, "You're not the owner of the Item");
+        require(balanceOf(msg.sender, tokenId) == 0, "You're not the owner of the Item");
         TokenInstance storage ti = tokenInstanceMapper[tokenId]; 
         require(ti.usageCounter < ti.maxUsages, "The nft is not valid anymore. Maxusages reached");
         //handle the cashback
@@ -111,7 +118,7 @@ contract KarmaContract is ERC721URIStorage, AccessControl  {
 
     }
 
-    function supportsInterface(bytes4 interfaceId) public view override(ERC721, AccessControl) returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view override(ERC1155, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 }
