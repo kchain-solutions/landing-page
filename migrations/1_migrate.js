@@ -1,7 +1,6 @@
-var KarmaContract = artifacts.require("KarmaContract");
-var KarmaContractFactory = artifacts.require("KarmaContractFactory");
+var CampaignScarsityFactory = artifacts.require("CampaignScarsityFactory");
 
 module.exports = function(deployer) {
   
-  deployer.deploy(KarmaContractFactory);
+  deployer.deploy(CampaignScarsityFactory);
 };
