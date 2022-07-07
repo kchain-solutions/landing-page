@@ -10,7 +10,11 @@ contract UsersNftBalance {
         q.push(item);
     }
 
-    function _moveItem(address owner, uint256 itemId, address to) internal returns (bool) {
+    function _moveItem(
+        address owner,
+        uint256 itemId,
+        address to
+    ) internal returns (bool) {
         uint256[] storage fromTokens = validTokens[owner];
         uint256[] storage toTokens = validTokens[to];
         delete _tmpArray;
@@ -18,7 +22,7 @@ contract UsersNftBalance {
         for (uint256 i = 0; i < fromTokens.length; i++) {
             if (fromTokens[i] == itemId) {
                 toTokens.push(itemId);
-                flag= true;
+                flag = true;
             } else {
                 _tmpArray.push(fromTokens[i]);
             }
@@ -35,21 +39,21 @@ contract UsersNftBalance {
         return vt[0];
     }
 
-    function getValidNFTs(address owner) public view returns (uint256[] memory) {
-        uint256[] memory q = validTokens[owner];
+    function getValidNFTs() public view returns (uint256[] memory) {
+        uint256[] memory q = validTokens[msg.sender];
         return q;
     }
 
-    function getNotValidNFTs(address owner) public view returns (uint256[] memory) {
-        uint256[] memory q = notValidTokens[owner];
+    function getNotValidNFTs() public view returns (uint256[] memory) {
+        uint256[] memory q = notValidTokens[msg.sender];
         return q;
     }
 
     function _dropNotValidTokens(address owner) internal {
-        delete  notValidTokens[owner];
+        delete notValidTokens[owner];
     }
 
-    function _putInvalid(address owner, uint256 itemId) public {
+    function _putInvalid(address owner, uint256 itemId) internal {
         uint256[] storage validTokensArray = validTokens[owner];
         uint256[] storage notValidTokensArray = notValidTokens[owner];
         delete _tmpArray;
@@ -57,6 +61,7 @@ contract UsersNftBalance {
         for (uint256 i = 0; i < validTokensArray.length; i++) {
             if (validTokensArray[i] == itemId) {
                 notValidTokensArray.push(itemId);
+                flag = true;
             } else {
                 _tmpArray.push(validTokensArray[i]);
             }

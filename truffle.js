@@ -22,7 +22,7 @@ module.exports = {
         return new HDWalletProvider(process.env.WALLET_PASSPHRASE, process.env.RINKEBY_INFURA_ENDPOINT);
       },
       network_id: 4,
-      gas: 29999972,
+      gas: 29970700,
       gasPrice: 10000000000,
     },
     ropsten:{

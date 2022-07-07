@@ -54,13 +54,14 @@ contract CampaignNoLimit is ERC721URIStorage, AccessControl, UsersNftBalance {
     using Counters for Counters.Counter;
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     address payable public admin;
+    uint256 public adminBalance;
     Counters.Counter private _tokenIds;
     uint256 public productPrice;
     uint96 public royaltiesPerc;
     uint96 public cashbackPerc;
     uint256 public remaningOffers;
     uint256 public mintingPrice;
-    string URI;
+    string public URI;
 
     mapping(uint256 => address payable) public royaltiesAddressMapper;
 
@@ -104,10 +105,14 @@ contract CampaignNoLimit is ERC721URIStorage, AccessControl, UsersNftBalance {
 
     function cashOut() public payable {
         require(hasRole(ADMIN_ROLE, msg.sender), "Only ADMIN can do cashout");
-        admin.transfer(address(this).balance);
+        require(adminBalance > 0, "Not ETH available to cashOut");
+        admin.transfer(adminBalance);
     }
 
-    function pay() public payable {}
+    function pay() public payable {
+        require(msg.value == productPrice, "Pay the product price amount");
+        adminBalance = msg.value;
+    }
 
     function payWithNft(uint256 tokenId) public payable {
         require(msg.value == productPrice, "Pay the product price amount");
@@ -115,9 +120,9 @@ contract CampaignNoLimit is ERC721URIStorage, AccessControl, UsersNftBalance {
             ownerOf(tokenId) == msg.sender,
             "You're not the owner of the Item"
         );
-        require(tokenIsUsed[tokenId] == true, "Token is not valid anymore");
+        require(tokenIsUsed[tokenId] == false, "Token is not valid anymore");
         // When the remaningOffers reach zero the campaign is closed
-        require(remaningOffers > 0, "This offer is closed");
+        require(remaningOffers >= 0, "The campaign is closed");
 
         uint256 cashback = (msg.value * cashbackPerc) / 100;
         uint256 royalties = (msg.value * royaltiesPerc) / 100;
@@ -127,6 +132,7 @@ contract CampaignNoLimit is ERC721URIStorage, AccessControl, UsersNftBalance {
         remaningOffers = remaningOffers - 1;
         cashbackAddress.transfer(cashback);
         tokenIsUsed[tokenId] = true;
+        adminBalance = msg.value - cashback - royalties;
         _putInvalid(msg.sender, tokenId);
     }
 

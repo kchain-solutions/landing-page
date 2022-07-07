@@ -1,6 +1,5 @@
-var CampaignScarsityFactory = artifacts.require("CampaignScarsityFactory");
+var CampaignNoLimitFactory = artifacts.require("CampaignNoLimitFactory");
 
 module.exports = function(deployer) {
-  
-  deployer.deploy(CampaignScarsityFactory);
+  deployer.deploy(CampaignNoLimitFactory);
 };

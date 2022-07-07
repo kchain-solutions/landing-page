@@ -41,19 +41,19 @@ const URI = "uri.com"
 
 const NFT_NAME = 'karma';
 const SYMBOL = 'krm';
-const PRODUCT_PRICE = '1000';
+const PRODUCT_PRICE = Web3.utils.toWei('1', 'ether');;
 const MINTING_LIMIT = '3';
 const TOKEN_MAX_USAGE = '2';
 const CAMPAIGN_ROYALTIES = '10';
 const CAMPAIGN_CASHBACK = '5';
 
 //NO_LIMIT PARAMETERS
-const NFT_NAME2 = 'karma2';
-const SYMBOL2 = 'krm2';
-const PRODUCT_PRICE2 = '100000';
-const REMANING_OFFERS2 = '3';
-const CAMPAIGN_ROYALTIES2 = '10';
-const CAMPAIGN_CASHBACK2 = '5';
+const NFT_NAME_NOLIMIT = 'karma2';
+const SYMBOL_NOLIMIT = 'krm2';
+const PRODUCT_PRICE_NOLIMIT = Web3.utils.toWei('1', 'ether');
+const REMANING_OFFERS_NOLIMIT = '3';
+const CAMPAIGN_ROYALTIES_NOLIMIT = '20';
+const CAMPAIGN_CASHBACK_NOLIMIT = '20';
 
 beforeEach(async () => {
 
@@ -84,8 +84,8 @@ beforeEach(async () => {
     });
 
     await campaignNoLimitFactory.methods.createCampaign(
-        NFT_NAME2, SYMBOL2, URI, PRODUCT_PRICE2, REMANING_OFFERS2,
-        CAMPAIGN_ROYALTIES2, CAMPAIGN_CASHBACK2
+        NFT_NAME_NOLIMIT, SYMBOL_NOLIMIT, URI, PRODUCT_PRICE_NOLIMIT, REMANING_OFFERS_NOLIMIT,
+        CAMPAIGN_ROYALTIES_NOLIMIT, CAMPAIGN_CASHBACK_NOLIMIT
     ).send({
         from: admin,
         gas: GAS
@@ -99,15 +99,12 @@ beforeEach(async () => {
         { from: admin }
     );
 
+    campaignNoLimitInstance = await new web3.eth.Contract(CampaignNoLimitBuild.abi, noLimitDeployedCampaigns[0]);
+
 });
 
 
 describe('Contract deploy test', async () => {
-
-    // it('Check karma contract instance', async () => {
-    //     assert.ok(campaignNoLimitInstance);
-    //     assert.ok(campaignScarsityInstance);
-    // });
 
     it('Nolimit deployed campaign test', async () => {
         let adminDeployedContracts = await await campaignNoLimitFactory.methods.getCampaigns().call(
@@ -135,65 +132,58 @@ describe('Contract deploy test', async () => {
 
 describe('NO LIMIT campaign', () => {
 
-    it('Test name and symbol', async () =>{
-        campaignNoLimitInstance = await new web3.eth.Contract(CampaignNoLimitBuild.abi, noLimitDeployedCampaigns[0]);
-        let name = await campaignNoLimitInstance.methods.name().call({ from: visibilityProvider});
-        let symbol = await campaignNoLimitInstance.methods.symbol().call({ from: visibilityProvider});
-        assert.equal(name, NFT_NAME2);
-        assert.equal(symbol, SYMBOL2);
-    });
-
     it('Mint a nolimit token', async () => {
 
+        await campaignNoLimitInstance.methods.mintNFT().send({ from: visibilityProvider, gas: '1000000' });
+        await campaignNoLimitInstance.methods.mintNFT().send({ from: visibilityProvider, gas: '1000000' });
+        let tokenIdsVisibilityProvider = await campaignNoLimitInstance.methods.getValidNFTs().call({ from: visibilityProvider, gas: '1000000' });
+        assert.equal(tokenIdsVisibilityProvider[0], 0);
+        assert.equal(tokenIdsVisibilityProvider[1], 1);
+        let tokenIdsVisibilityAdmin = await campaignNoLimitInstance.methods.getValidNFTs().call({ from: admin, gas: '1000000' });
+        assert.equal(tokenIdsVisibilityAdmin.length, 0);
+    });
+
+    it("Test campaign data detail", async () => {
+        noLimitDeployedCampaigns = await campaignNoLimitFactory.methods.getCampaigns().call(
+            { from: admin }
+        );
         campaignNoLimitInstance = await new web3.eth.Contract(CampaignNoLimitBuild.abi, noLimitDeployedCampaigns[0]);
-        let tokenId = await campaignNoLimitInstance.methods.mintNFT().send({ from: visibilityProvider, gas: '1000000' });
-        let tokenId1 = await campaignNoLimitInstance.methods.mintNFT().send({ from: visibilityProvider, gas: '1000000' });
-        let balance = await campaignNoLimitInstance.methods.balanceOf(visibilityProvider).call({ from: visibilityProvider, gas: '1000000' });
-        assert.equal(balance, 2);
+        let name = await campaignNoLimitInstance.methods.name().call({from:admin});
+        let symbol = await campaignNoLimitInstance.methods.symbol().call({from:admin});
+        let tokenURI = await campaignNoLimitInstance.methods.URI().call({from:admin});
+        assert.equal(name, NFT_NAME_NOLIMIT);
+        assert.equal(symbol, SYMBOL_NOLIMIT);
+        assert.equal(tokenURI, URI);
 
     });
 
-    it('Test a offer limit', async () => {
-        // let exceptionFlag = false;
-        // let tokenIDs = [];
-        // for(let i = 0; i<REMANING_OFFERS2 + 1; i++){
-        //     tokenIDs[i] = await campaignNoLimitInstance.methods.mintItem().call({from:visibilityProvider});
-        //     await campaignNoLimitInstance.methods.transfer(customer, tokenIDs[i]).call({from:visibilityProvider});
-        // }
-        // try{
-        //     for(let i = 0; i<REMANING_OFFERS2 + 1; i++){
-        //         await campaignNoLimitInstance.methods.payWithNFT(tokenIDs[i]).send({from: customer, value: PRODUCT_PRICE2});
-        //     }
+    it('Payment process test', async () => {
 
-        // }catch{
-        //     exceptionFlag = true
-        // }
-        // assert.equal(exceptionFlag, true);
+        let customerBalanceBefore = await web3.eth.getBalance(customer);
+        let visibilityProviderBalanceBefore = await web3.eth.getBalance(visibilityProvider);
+        //Token minintg
+        await campaignNoLimitInstance.methods.mintNFT().send({ from: visibilityProvider, gas: '1000000' });
+        await campaignNoLimitInstance.methods.mintNFT().send({ from: visibilityProvider, gas: '1000000' });
+        //Account balance
+        let tokenIds = await campaignNoLimitInstance.methods.getValidNFTs().call({from:visibilityProvider});
+        assert.equal(tokenIds.length, 2);
+        //Token transfer
+        await campaignNoLimitInstance.methods.transfer(customer, tokenIds[1]).send({from:visibilityProvider, gas: '1000000'});
+        let tokenIdsTransfered = await campaignNoLimitInstance.methods.getValidNFTs().call({from:customer });
+        assert.equal(tokenIdsTransfered[0], 1);
 
-    });
+        await campaignNoLimitInstance.methods.payWithNft(tokenIdsTransfered[0]).send({value:PRODUCT_PRICE_NOLIMIT, from:customer, gas: '400000000'});
 
-    it('Pay with NFT test process', async () => {
-        // let tokenId = await campaignNoLimitInstance.methods.mintItem().send({ from: visibilityProvider, gasLimit:GAS });
-        // console.log("tokenId1 ", tokenId);
+        let customerBalanceLater = await web3.eth.getBalance(customer);
+        let customerVisibilityProviderLater = await web3.eth.getBalance(visibilityProvider);
+        let differenceBalanceCustomer =  customerBalanceBefore + PRODUCT_PRICE_NOLIMIT - customerBalanceLater;
+        let differenceBalanceVisibilityProvider =  customerVisibilityProviderLater - visibilityProviderBalanceBefore;  
 
-        // tokenId = await campaignNoLimitInstance.methods.mintItem().send({ from: visibilityProvider,gasLimit:GAS });
-        // console.log("tokenId2 ", tokenId);
-        // let firstOwner = await campaignNoLimitInstance.methods.ownerOf(tokenId).call({ from: visibilityProvider});
-        // assert.equal(firstOwner, visibilityProvider);
-
-        // console.log("LOG1 ", firstOwner);
-        // await campaignNoLimitInstance.methods.transfer(customer, tokenId).call({ from: visibilityProvider });
-        // let secondOwner = await campaignNoLimitInstance.methods.ownerOf(tokenId).call({ from: visibilityProvider });
-        // console.log("LOG2 ", secondOwner);
-        // assert.equal(secondOwner, customer);
-        // await campaignNoLimitInstance.methods.payWithNFT(tokenId).send({ from: customer, value: PRODUCT_PRICE2 });
-        // let isUsed = await campaignNoLimitInstance.methods.tokenIsUsed(tokenId).call({ from: customer });
-        // assert.equal(isUsed, true);
-    });
-
-    it('', async () => {
+        assert.equal(differenceBalanceCustomer > await  Web3.utils.toWei('0.15', 'ether'), true);
+        assert.equal(differenceBalanceVisibilityProvider > await Web3.utils.toWei('0.15', 'ether'), true);
 
     });
+
 });
 
 describe('SCARSITY test', () => {
