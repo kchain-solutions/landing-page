@@ -4,6 +4,8 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
+import "./UsersNftBalance.sol";
+
 contract CampaignNoLimitFactory {
     
 
@@ -13,6 +15,7 @@ contract CampaignNoLimitFactory {
     function createCampaign(
         string memory name,
         string memory symbol,
+        string memory URI,
         uint96 productprice,
         uint256 remaningOffers,
         uint96 campaignRoyaltiesPerc,
@@ -25,6 +28,7 @@ contract CampaignNoLimitFactory {
                 msg.sender,
                 name,
                 symbol,
+                URI,
                 productprice,
                 remaningOffers,
                 campaignRoyaltiesPerc,
@@ -44,14 +48,11 @@ contract CampaignNoLimitFactory {
     }
 }
 
-contract CampaignNoLimit is ERC721URIStorage, AccessControl {
+contract CampaignNoLimit is ERC721URIStorage, AccessControl, UsersNftBalance {
     //Limited offer for infinite NFT
 
     using Counters for Counters.Counter;
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant VISIBILITY_PROVIDER_ROLE =
-        keccak256("VISIBILITY_PROVIDER_ROLE");
     address payable public admin;
     Counters.Counter private _tokenIds;
     uint256 public productPrice;
@@ -59,8 +60,11 @@ contract CampaignNoLimit is ERC721URIStorage, AccessControl {
     uint96 public cashbackPerc;
     uint256 public remaningOffers;
     uint256 public mintingPrice;
+    string URI;
 
     mapping(uint256 => address payable) public royaltiesAddressMapper;
+
+    mapping(uint256 => bool) public tokenIsUsed;
 
     uint256 public mintingLimit;
 
@@ -68,32 +72,33 @@ contract CampaignNoLimit is ERC721URIStorage, AccessControl {
         address owner,
         string memory nftName,
         string memory symbol,
+        string memory uri,
         uint256 productprice,
-        uint256 remaningOffers,
+        uint256 remaningoffers,
         uint96 campaignRoyaltiesPerc,
         uint96 campaignCashbackPerc
     ) payable ERC721(nftName, symbol) {
         _setupRole(ADMIN_ROLE, owner);
-        _setupRole(MINTER_ROLE, owner);
 
         productPrice = productprice;
         royaltiesPerc = campaignRoyaltiesPerc;
         cashbackPerc = campaignCashbackPerc;
-        remaningOffers = remaningOffers;
-
+        remaningOffers = remaningoffers;
+        URI = uri;
         admin = payable(owner);
     }
 
-    function mintItem(address player, string memory uri)
-        public
-        returns (uint256)
-    {
+    function mintNFT() public returns (uint256) {
         uint256 newItemId = _tokenIds.current();
-
-        _mint(player, newItemId);
-        _setTokenURI(newItemId, uri);
-        royaltiesAddressMapper[newItemId] = payable(player);
+        address payable NftOwner = payable(msg.sender);
+        
+        _mint(NftOwner, newItemId);
+        _setTokenURI(newItemId, URI);
+        _addItem(msg.sender, newItemId);
+        royaltiesAddressMapper[newItemId] = NftOwner;
+        tokenIsUsed[newItemId] = false;
         _tokenIds.increment();
+        
         return newItemId;
     }
 
@@ -105,11 +110,12 @@ contract CampaignNoLimit is ERC721URIStorage, AccessControl {
     function pay() public payable {}
 
     function payWithNft(uint256 tokenId) public payable {
-        require(msg.value >= productPrice, "not enought money sent");
+        require(msg.value == productPrice, "Pay the product price amount");
         require(
             ownerOf(tokenId) == msg.sender,
             "You're not the owner of the Item"
         );
+        require(tokenIsUsed[tokenId] == true, "Token is not valid anymore");
         // When the remaningOffers reach zero the campaign is closed
         require(remaningOffers > 0, "This offer is closed");
 
@@ -120,6 +126,8 @@ contract CampaignNoLimit is ERC721URIStorage, AccessControl {
         address payable cashbackAddress = payable(msg.sender);
         remaningOffers = remaningOffers - 1;
         cashbackAddress.transfer(cashback);
+        tokenIsUsed[tokenId] = true;
+        _putInvalid(msg.sender, tokenId);
     }
 
     function transfer(address recipient, uint256 tokenId)
@@ -128,6 +136,7 @@ contract CampaignNoLimit is ERC721URIStorage, AccessControl {
         returns (bool)
     {
         _transfer(_msgSender(), recipient, tokenId);
+        _moveItem(msg.sender, tokenId, recipient);
         return true;
     }
 

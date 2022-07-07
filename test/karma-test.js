@@ -33,7 +33,11 @@ let accounts = [];
 let admin = '';
 let artist = '';
 let visibilityProvider = '';
+let customer = '';
 
+
+//SCARSITY PARAMETERS
+const URI = "uri.com"
 
 const NFT_NAME = 'karma';
 const SYMBOL = 'krm';
@@ -43,9 +47,10 @@ const TOKEN_MAX_USAGE = '2';
 const CAMPAIGN_ROYALTIES = '10';
 const CAMPAIGN_CASHBACK = '5';
 
+//NO_LIMIT PARAMETERS
 const NFT_NAME2 = 'karma2';
 const SYMBOL2 = 'krm2';
-const PRODUCT_PRICE2 = '1000';
+const PRODUCT_PRICE2 = '100000';
 const REMANING_OFFERS2 = '3';
 const CAMPAIGN_ROYALTIES2 = '10';
 const CAMPAIGN_CASHBACK2 = '5';
@@ -56,6 +61,7 @@ beforeEach(async () => {
     admin = accounts[0];
     artist = accounts[1];
     visibilityProvider = accounts[2];
+    customer = accounts[3];
 
     campaignNoLimitFactory = await new web3.eth.Contract(CampaignNoLimitFactoryBuild.abi)
         .deploy({
@@ -70,7 +76,7 @@ beforeEach(async () => {
         .send({ from: admin, gas: GAS });
 
     await campaignScarsityFactory.methods.createCampaign(
-        NFT_NAME, SYMBOL, PRODUCT_PRICE, MINTING_LIMIT,
+        NFT_NAME, SYMBOL, URI, PRODUCT_PRICE, MINTING_LIMIT,
         TOKEN_MAX_USAGE, CAMPAIGN_ROYALTIES, CAMPAIGN_CASHBACK
     ).send({
         from: admin,
@@ -78,7 +84,7 @@ beforeEach(async () => {
     });
 
     await campaignNoLimitFactory.methods.createCampaign(
-        NFT_NAME2, SYMBOL2, PRODUCT_PRICE2, REMANING_OFFERS2,
+        NFT_NAME2, SYMBOL2, URI, PRODUCT_PRICE2, REMANING_OFFERS2,
         CAMPAIGN_ROYALTIES2, CAMPAIGN_CASHBACK2
     ).send({
         from: admin,
@@ -93,18 +99,15 @@ beforeEach(async () => {
         { from: admin }
     );
 
-    campaignNoLimitInstance = await new web3.eth.Contract(CampaignNoLimitBuild.abi, noLimitDeployedCampaigns[0]);
-    campaignScarsityInstance = await new web3.eth.Contract(CampaignScarsityBuild.abi, scarsityDeployedCampaigns[0]);
-
 });
 
 
 describe('Contract deploy test', async () => {
 
-    it('Check karma contract instance', async () => {
-        assert.ok(campaignNoLimitInstance);
-        assert.ok(campaignScarsityInstance);
-    });
+    // it('Check karma contract instance', async () => {
+    //     assert.ok(campaignNoLimitInstance);
+    //     assert.ok(campaignScarsityInstance);
+    // });
 
     it('Nolimit deployed campaign test', async () => {
         let adminDeployedContracts = await await campaignNoLimitFactory.methods.getCampaigns().call(
@@ -121,8 +124,10 @@ describe('Contract deploy test', async () => {
     });
 
     it('Campaign owners tests', async () => {
-        let adminRis = await campaignNoLimitInstance.methods.admin().call({ from: visibilityProvider });
-        let adminRis1 = await campaignScarsityInstance.methods.admin().call({ from: visibilityProvider });
+        campaignNoLimitInstance = await new web3.eth.Contract(CampaignNoLimitBuild.abi, noLimitDeployedCampaigns[0]);
+        campaignScarsityInstance = await new web3.eth.Contract(CampaignScarsityBuild.abi, scarsityDeployedCampaigns[0]);
+        let adminRis = await campaignNoLimitInstance.methods.admin().call({from: visibilityProvider, gas: '1000000'});
+        let adminRis1 = await campaignScarsityInstance.methods.admin().call({ from: visibilityProvider, gas: '1000000' });
         assert.equal(adminRis, admin);
         assert.equal(adminRis1, admin);
     });
@@ -130,16 +135,60 @@ describe('Contract deploy test', async () => {
 
 describe('NO LIMIT campaign', () => {
 
+    it('Test name and symbol', async () =>{
+        campaignNoLimitInstance = await new web3.eth.Contract(CampaignNoLimitBuild.abi, noLimitDeployedCampaigns[0]);
+        let name = await campaignNoLimitInstance.methods.name().call({ from: visibilityProvider});
+        let symbol = await campaignNoLimitInstance.methods.symbol().call({ from: visibilityProvider});
+        assert.equal(name, NFT_NAME2);
+        assert.equal(symbol, SYMBOL2);
+    });
+
     it('Mint a nolimit token', async () => {
+
+        campaignNoLimitInstance = await new web3.eth.Contract(CampaignNoLimitBuild.abi, noLimitDeployedCampaigns[0]);
+        let tokenId = await campaignNoLimitInstance.methods.mintNFT().send({ from: visibilityProvider, gas: '1000000' });
+        let tokenId1 = await campaignNoLimitInstance.methods.mintNFT().send({ from: visibilityProvider, gas: '1000000' });
+        let balance = await campaignNoLimitInstance.methods.balanceOf(visibilityProvider).call({ from: visibilityProvider, gas: '1000000' });
+        assert.equal(balance, 2);
 
     });
 
     it('Test a offer limit', async () => {
+        // let exceptionFlag = false;
+        // let tokenIDs = [];
+        // for(let i = 0; i<REMANING_OFFERS2 + 1; i++){
+        //     tokenIDs[i] = await campaignNoLimitInstance.methods.mintItem().call({from:visibilityProvider});
+        //     await campaignNoLimitInstance.methods.transfer(customer, tokenIDs[i]).call({from:visibilityProvider});
+        // }
+        // try{
+        //     for(let i = 0; i<REMANING_OFFERS2 + 1; i++){
+        //         await campaignNoLimitInstance.methods.payWithNFT(tokenIDs[i]).send({from: customer, value: PRODUCT_PRICE2});
+        //     }
+
+        // }catch{
+        //     exceptionFlag = true
+        // }
+        // assert.equal(exceptionFlag, true);
 
     });
 
-    it('', async () => {
+    it('Pay with NFT test process', async () => {
+        // let tokenId = await campaignNoLimitInstance.methods.mintItem().send({ from: visibilityProvider, gasLimit:GAS });
+        // console.log("tokenId1 ", tokenId);
 
+        // tokenId = await campaignNoLimitInstance.methods.mintItem().send({ from: visibilityProvider,gasLimit:GAS });
+        // console.log("tokenId2 ", tokenId);
+        // let firstOwner = await campaignNoLimitInstance.methods.ownerOf(tokenId).call({ from: visibilityProvider});
+        // assert.equal(firstOwner, visibilityProvider);
+
+        // console.log("LOG1 ", firstOwner);
+        // await campaignNoLimitInstance.methods.transfer(customer, tokenId).call({ from: visibilityProvider });
+        // let secondOwner = await campaignNoLimitInstance.methods.ownerOf(tokenId).call({ from: visibilityProvider });
+        // console.log("LOG2 ", secondOwner);
+        // assert.equal(secondOwner, customer);
+        // await campaignNoLimitInstance.methods.payWithNFT(tokenId).send({ from: customer, value: PRODUCT_PRICE2 });
+        // let isUsed = await campaignNoLimitInstance.methods.tokenIsUsed(tokenId).call({ from: customer });
+        // assert.equal(isUsed, true);
     });
 
     it('', async () => {

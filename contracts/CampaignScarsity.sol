@@ -13,6 +13,7 @@ contract CampaignScarsityFactory {
     function createCampaign(
         string memory name,
         string memory symbol,
+        string memory URI,
         uint96 productprice,
         uint256 setupMintingLimit,
         uint96 tokenMaxUsage,
@@ -25,6 +26,7 @@ contract CampaignScarsityFactory {
                 msg.sender,
                 name,
                 symbol,
+                URI,
                 productprice,
                 setupMintingLimit,
                 tokenMaxUsage,
@@ -61,6 +63,7 @@ contract CampaignScarsity is ERC721URIStorage, AccessControl {
     uint96 public tokenMaxUsages;
     uint256 public mintingLimit;
     uint256 public mintingPrice;
+    string uri;
 
     struct TokenInstance {
         uint256 maxUsages;
@@ -80,8 +83,9 @@ contract CampaignScarsity is ERC721URIStorage, AccessControl {
         address owner,
         string memory nftName,
         string memory symbol,
+        string memory URI,
         uint256 productprice,
-        uint256 mintingLimit,
+        uint256 mintinglimit,
         uint96 tokenMaxUsage,
         uint96 campaignRoyaltiesPerc,
         uint96 campaignCashbackPerc
@@ -95,14 +99,15 @@ contract CampaignScarsity is ERC721URIStorage, AccessControl {
         cashbackPerc = campaignCashbackPerc;
 
         admin = payable(owner);
-        mintingLimit = mintingLimit;
+        mintingLimit = mintinglimit;
+        uri = URI;
         mintingPrice =
             productPrice -
             ((productPrice * campaignCashbackPerc) / 100) -
             ((productPrice * campaignRoyaltiesPerc) / 100);
     }
 
-    function mintItem(address player, string memory uri)
+    function mintItem()
         public payable
         returns (uint256)
     {
@@ -122,9 +127,11 @@ contract CampaignScarsity is ERC721URIStorage, AccessControl {
             usageCounter: 0
         });
 
-        _mint(player, newItemId);
+        address payable caller = payable(msg.sender);
+
+        _mint(caller, newItemId);
         _setTokenURI(newItemId, uri);
-        royaltiesAddressMapper[newItemId] = payable(player);
+        royaltiesAddressMapper[newItemId] = caller;
         _tokenIds.increment();
         return newItemId;
     }
