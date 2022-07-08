@@ -2,32 +2,30 @@ import { Grid, Box, AppBar, Toolbar, Typography, Container, Divider } from '@mui
 import React from 'react';
 import ConnectionButton from './ConnectionButton';
 import { useEffect, useState, useContext } from 'react';
-import CampaignFactoryInstance from '../ethereum/CampaignFactoryInstance';
+import CampaignFactoryInstances from '../ethereum/FactoryInstances';
 import { GlobalContext } from "../components/GlobalContext";
 import Web3 from "web3";
 import logo from "../images/logo.png"
 
-
-
-export default function EthereumNavbar (props) {
-
+export default function EthereumNavbar(props) {
 
     const { globalState, setGlobalState } = useContext(GlobalContext);
 
     const loadState = async (stateSession) => {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
         let web3 = await new Web3(window.ethereum);
-        let campaignFactoryInstance = await CampaignFactoryInstance(web3, props.campaignFactoryAddress);
+        let factoryInstances = await CampaignFactoryInstances(web3, props.noLimitFactoryAddress, props.scarsityFactoryAddress);
         stateSession['web3'] = web3;
-        stateSession['campaignFactoryInstance'] = campaignFactoryInstance;
-        console.log('loaded state', stateSession)
+        stateSession['CampaignNoLimitFactoryInstance'] = factoryInstances['CampaignNoLimitFactoryInstance'];
+        stateSession['CampaignScarsityFactoryInstance'] = factoryInstances['CampaignScarsityFactoryInstance'];
+        console.log('Loaded state', stateSession)
         setGlobalState(stateSession);
     }
 
     useEffect(() => {
-        console.log('Loading header');
+        console.log('Loading Ethereum Navbar');
         let stateSession = JSON.parse(localStorage.getItem("state"));
-        
+
         if (stateSession?.isConnected) {
             loadState(stateSession);
             console.log('Loading state from session', stateSession);
@@ -43,14 +41,20 @@ export default function EthereumNavbar (props) {
 
         if (web3) {
             let account = await web3.eth.getAccounts();
-            let campaignFactoryInstance = await CampaignFactoryInstance(web3, props.campaignFactoryAddress);
+            let factoryInstances = await CampaignFactoryInstances(web3, props.noLimitFactoryAddress, props.scarsityFactoryAddress);
             let newState = {
                 isConnected: true,
                 wallet: account[0],
                 web3: web3,
-                campaignFactoryInstance: campaignFactoryInstance
+                CampaignNoLimitFactoryInstance: factoryInstances['CampaignNoLimitFactoryInstance'],
+                CampaignScarsityFactoryInstance: factoryInstances['CampaignScarsityFactoryInstance']
+
             }
-            setGlobalState(newState);
+            setGlobalState(
+                {
+                    ...globalState,
+                    ...newState
+                });
             localStorage.setItem("state", JSON.stringify({
                 isConnected: true,
                 wallet: account[0]
@@ -58,10 +62,12 @@ export default function EthereumNavbar (props) {
         }
         else {
             setGlobalState({
+                ...globalState,
                 isConnected: false,
                 wallet: '',
                 web3: undefined,
-                campaignFactoryInstance: undefined
+                CampaignNoLimitFactoryInstance: undefined,
+                CampaignScarsityFactoryInstance: undefined
             });
             localStorage.removeItem("state");
         }

@@ -5,7 +5,7 @@ import { GlobalContext } from "../components/GlobalContext";
 import EthereumNavbar from "../components/EthereumNavbar";
 
 export default function Ethereum(props) {
-    
+
     const [localState, setLocalState] = useState({
 
     });
@@ -14,14 +14,14 @@ export default function Ethereum(props) {
     useEffect(() => {
         setGlobalState({
             ...globalState,
-            currentPage:"ethereum.js"
+            currentPage: "ethereum.js"
         })
         globalState.web3;
     }, []);
-    
+
     return <>
         <CustomTheme>
-            <EthereumNavbar value={props.campaignFactoryAddress}/>
+            <EthereumNavbar noLimitFactoryAddress={props.noLimitFactoryAddress} scarsityFactoryAddress={props.scarsityFactoryAddress} />
             <Typography variant="h3"> Ethereum Demo </Typography>
             <Typography variant="h5"> WIP </Typography>
         </CustomTheme>
@@ -29,12 +29,14 @@ export default function Ethereum(props) {
 }
 
 export async function getStaticProps() {
-    const baseUrl = process.env.API_BASE_URL; 
-    const campaignFactoryAddress = process.env.CAMPAIGN_FACTORY_ADDRESS_ETH;
-    return{
+    const baseUrl = process.env.API_BASE_URL;
+    const noLimitFactoryAddress = process.env.CAMPAIGN_NOLIMIT_FACTORY_RINKEBY;
+    const scarsityFactoryAddress = process.env.CAMPAIGN_SCARSITY_FACTORY_RINKEBY;
+    return {
         props: {
             baseUrl,
-            campaignFactoryAddress
+            noLimitFactoryAddress,
+            scarsityFactoryAddress
         }
     }
-  }
+}
