@@ -161,6 +161,8 @@ describe('NO LIMIT campaign', () => {
 
         let customerBalanceBefore = await web3.eth.getBalance(customer);
         let visibilityProviderBalanceBefore = await web3.eth.getBalance(visibilityProvider);
+        let adminBalanceBefore = await web3.eth.getBalance(admin);
+
         //Token minintg
         await campaignNoLimitInstance.methods.mintNFT().send({ from: visibilityProvider, gas: '1000000' });
         await campaignNoLimitInstance.methods.mintNFT().send({ from: visibilityProvider, gas: '1000000' });
@@ -172,6 +174,9 @@ describe('NO LIMIT campaign', () => {
         let tokenIdsTransfered = await campaignNoLimitInstance.methods.getValidNFTs().call({from:customer });
         assert.equal(tokenIdsTransfered[0], 1);
 
+
+
+        //Payment
         await campaignNoLimitInstance.methods.payWithNft(tokenIdsTransfered[0]).send({value:PRODUCT_PRICE_NOLIMIT, from:customer, gas: '400000000'});
 
         let customerBalanceLater = await web3.eth.getBalance(customer);
@@ -179,9 +184,32 @@ describe('NO LIMIT campaign', () => {
         let differenceBalanceCustomer =  customerBalanceBefore + PRODUCT_PRICE_NOLIMIT - customerBalanceLater;
         let differenceBalanceVisibilityProvider =  customerVisibilityProviderLater - visibilityProviderBalanceBefore;  
 
-        assert.equal(differenceBalanceCustomer > await  Web3.utils.toWei('0.15', 'ether'), true);
-        assert.equal(differenceBalanceVisibilityProvider > await Web3.utils.toWei('0.15', 'ether'), true);
+        //Verifying cashback and royalties
+        assert.equal(differenceBalanceCustomer >  Web3.utils.toWei('0.15', 'ether'), true);
+        assert.equal(differenceBalanceVisibilityProvider > Web3.utils.toWei('0.15', 'ether'), true);
 
+        //Check is valid
+        let notValidNfts = await campaignNoLimitInstance.methods.getNotValidNFTs().call({from:customer });
+        let validNfts = await campaignNoLimitInstance.methods.getValidNFTs().call({from:customer });
+        assert.equal(notValidNfts[0], 1);
+        assert.equal(validNfts.length, 0);
+
+        //Check cash out
+        await campaignNoLimitInstance.methods.cashOut().send({from:admin});
+        let adminBalanceLater = await web3.eth.getBalance(admin);
+        assert.equal(adminBalanceLater - adminBalanceBefore >  Web3.utils.toWei('0.5', 'ether'), true);
+    });
+
+    it('Pay without NFT test', async () => {
+        let adminBalanceBefore = await web3.eth.getBalance(admin);
+        await campaignNoLimitInstance.methods.pay().send({from:customer, value:PRODUCT_PRICE_NOLIMIT});
+        await campaignNoLimitInstance.methods.pay().send({from:customer, value:PRODUCT_PRICE_NOLIMIT});
+        await campaignNoLimitInstance.methods.cashOut().send({from:admin});
+        
+        let adminBalanceLater = await web3.eth.getBalance(admin);
+        let finalBalance = adminBalanceLater - adminBalanceBefore;
+        let thresholdExpected = (PRODUCT_PRICE_NOLIMIT * 2) - Web3.utils.toWei('0.1', 'ether')
+        assert.equal(finalBalance > thresholdExpected, true);
     });
 
 });

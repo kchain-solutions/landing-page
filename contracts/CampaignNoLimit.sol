@@ -111,7 +111,7 @@ contract CampaignNoLimit is ERC721URIStorage, AccessControl, UsersNftBalance {
 
     function pay() public payable {
         require(msg.value == productPrice, "Pay the product price amount");
-        adminBalance = msg.value;
+        adminBalance = adminBalance + msg.value;
     }
 
     function payWithNft(uint256 tokenId) public payable {
@@ -132,7 +132,7 @@ contract CampaignNoLimit is ERC721URIStorage, AccessControl, UsersNftBalance {
         remaningOffers = remaningOffers - 1;
         cashbackAddress.transfer(cashback);
         tokenIsUsed[tokenId] = true;
-        adminBalance = msg.value - cashback - royalties;
+        adminBalance = adminBalance + msg.value - cashback - royalties;
         _putInvalid(msg.sender, tokenId);
     }
 

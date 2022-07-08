@@ -1,0 +1,444 @@
+
+> inbox-updated@1.0.0 test
+> mocha
+
+
+
+  Contract deploy test
+eth_accounts
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x32b5cdaa4a74ef70971fba789d026431d3de48b5ad88f8849696d658ba34fe03
+  Contract created: 0x8c6968b94c9634d00e03495fe88b03bfc8e62235
+  Gas usage: 5125874
+  Block number: 1
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xa7bfef827767bc8c8c7b5b15aef0f552491ad835f382995d43a9b9382e8f670b
+  Contract created: 0x2fa752fa2ec4e218694426f1673c55284ece71c7
+  Gas usage: 4907192
+  Block number: 2
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x976c0d49699e8250d94578740198b41b494e554ef42f8cc4e6d1d4803692e87b
+  Gas usage: 3822653
+  Block number: 3
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x28a866aea9f446d5e79f721154f0c216ab370937376bcdeec6d52b685823971d
+  Gas usage: 4071823
+  Block number: 4
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_call
+eth_call
+    ✔ Nolimit deployed campaign test
+eth_accounts
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xbbea763f4d9e38b9ee1efb4096eb053fafbcb1d3e66c6052b168d7832189eff2
+  Contract created: 0x8003abb84e1c64ea7467d76d73b4bc0debf64264
+  Gas usage: 5125874
+  Block number: 5
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x9a465f3ac4b3127cc3dd2c8dc87e0b21ac9badc05ed9aa89862228f9740c93fd
+  Contract created: 0x8e91854b9f3d79e57b911bb547c0909c86c70b84
+  Gas usage: 4907192
+  Block number: 6
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x13c66ad8d36f733c843df019e728ab0a15c6a6a1b76827f98761606957b3c902
+  Gas usage: 3822653
+  Block number: 7
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xf41b312562b696f586d6d1929a57a99ce59b9b3d01b3d331c43c920ce4c727fd
+  Gas usage: 4071823
+  Block number: 8
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_call
+eth_call
+    ✔ Scarsity deployed campaign test
+eth_accounts
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x10da87b02a0c49055acd10c0394c5ea58ea1f90734fe5b02dee4f8f477e9e77b
+  Contract created: 0xd5f7e35524919a298785f6e2f62f0cec39dd5851
+  Gas usage: 5125874
+  Block number: 9
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x5e41b58d11c49c9ba436ec6aca73a62e6e16bfe70941fd9e985193b5348cbd66
+  Contract created: 0x07b1bec7ccf4c25740cfd1a1fc6331c32a60ef5f
+  Gas usage: 4907192
+  Block number: 10
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x5076e16a2883ed9a7e0974f22d28ba980419ffa0f8ab179a918d54e2a470788a
+  Gas usage: 3822653
+  Block number: 11
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x2a224131c51ab7932692f111e9231df6b79a09f0962a619643848f76b6ebe5f6
+  Gas usage: 4071823
+  Block number: 12
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_call
+eth_call
+eth_call
+    ✔ Campaign owners tests
+
+  NO LIMIT campaign
+eth_accounts
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x3adc8766ce78fccbdd40e4ae6fa62c06383edcde900d302051eb7c3a19fb4a1f
+  Contract created: 0x41371707425549683da16c16c41fbaa9a2641e73
+  Gas usage: 5125874
+  Block number: 13
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xc9ee226ab40089c1a6e4f2b09181520ec57c50a85fe969a2956a0f7250ee6241
+  Contract created: 0x131ac70430ae9eeaf1ed7e652675dd26cc06719b
+  Gas usage: 4907192
+  Block number: 14
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xd07986819f5caab6a6f197117be0cfeced980d8a17cb354e31e8cc3eb17e2bb2
+  Gas usage: 3822653
+  Block number: 15
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x3dbd7c0e208596bc1d5771b29f058fa921aea6b2e08b76280da449126a6e0154
+  Gas usage: 4071823
+  Block number: 16
+  Block time: Fri Jul 08 2022 16:37:58 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_call
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xcedfb8d39bbfce42cbd6260c6993e39a0753abc33bc2ab494b47de9b2c854d85
+  Gas usage: 165880
+  Block number: 17
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x5d5cd050115460a5f7aa1fe438013e0cf3164546202e4dc18d4c4f54d6338173
+  Gas usage: 134480
+  Block number: 18
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_call
+    ✔ Mint a nolimit token (51ms)
+eth_accounts
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xf5d8482f54ef969624e2e2a5a2ca570359ba1b6c874ca74923322d021fb33bab
+  Contract created: 0x926feb2419a2d757bb4b3ffa22a72e34c32e8016
+  Gas usage: 5125874
+  Block number: 19
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xa65d5d435865f2782be62b8633aa3283303bc590c4e1b205a60141c6b72e1a86
+  Contract created: 0xcc77c090f630d3776515ec6df85ab7ecd86a7394
+  Gas usage: 4907192
+  Block number: 20
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x1576ee25c8c2ea693d085ccc194eea8a676f93bb374e084793fafdb3a6b823ca
+  Gas usage: 3822653
+  Block number: 21
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xd3813b0a6bb0cb4e6a5cd65de65d1d4126dfd23d56f5a456d23bd5e7c1035ee2
+  Gas usage: 4071823
+  Block number: 22
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_call
+eth_call
+eth_call
+eth_call
+eth_call
+    ✔ Test campaign data detail
+eth_accounts
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x8cd054c9dea52d398a473ba5f55d9e88909d443e3d26f09fa87e145742ca17fb
+  Contract created: 0xc3dd99060fa501b67d84b8e87ce313fa4a6fb395
+  Gas usage: 5125874
+  Block number: 23
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x51f3166d07f62b9a00b471eb96aec04b34e0c7d3358768e4a856238f00a706dd
+  Contract created: 0xaa275b47adbe91d5366fcddd6532f690ed36d514
+  Gas usage: 4907192
+  Block number: 24
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xcea761d0b9eea8d8452260b726b378021592e4adcf536d0aabbc7789ff1df97b
+  Gas usage: 3822653
+  Block number: 25
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xfb1acbc7273bcb2f477905bba4d9fcc9f99cab42e6dbafcc3b3f30eecce4d3b0
+  Gas usage: 4071823
+  Block number: 26
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_call
+eth_getBalance
+eth_getBalance
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xb41950988b37ce7a58833118a77277e6d24468fb9298c31eeb730b96913c41e8
+  Gas usage: 165880
+  Block number: 27
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xded5007a39430ffccc16a159f65b31d6a87cc9c43b4a99afc0b984b83cd7f858
+  Gas usage: 134480
+  Block number: 28
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x088c93bd30dccfa262b9361e93e4ce9c34cb8cc43ccc9baa4ec3c7991640baaa
+  Gas usage: 141320
+  Block number: 29
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x15ebbd44ef881e363e3748b614016b6d1f8434c48b4a97a348ebd62819382610
+  Gas usage: 150051
+  Block number: 30
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getBalance
+eth_getBalance
+eth_call
+eth_call
+    1) Payment process test
+
+  SCARSITY test
+eth_accounts
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x0217b7ede29029cf595e5643da16180c7454a9a60cba2228c06ffa0db0b663ad
+  Contract created: 0x4b45425a39badbdb5236b20d872d186eb3e6b471
+  Gas usage: 5125874
+  Block number: 31
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xf2d5c11ef8dbe56e60b0bea7de520770b0a384dd2232d2ebdca1dc0abeb8eeb4
+  Contract created: 0x58a75211555498e5f822892f7ff89fad055ffdb1
+  Gas usage: 4907192
+  Block number: 32
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getCode
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0xdc811e97e98e8055c060d849fcccc46077166cf65c01e47a31916b5e92c32275
+  Gas usage: 3822653
+  Block number: 33
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_getBlockByNumber
+eth_gasPrice
+eth_sendTransaction
+
+  Transaction: 0x131d964b1dbad739d564d095b38815c5fb2a38c781df06b23d2f842e8669bbe2
+  Gas usage: 4071823
+  Block number: 34
+  Block time: Fri Jul 08 2022 16:37:59 GMT+0100 (Western European Summer Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_call
+    ✔ Mint a scarsity token
+
+
+  6 passing (1s)
+  1 failing
+
+  1) NO LIMIT campaign
+       Payment process test:
+
+      AssertionError [ERR_ASSERTION]: 1 == 0
+      + expected - actual
+
+      -1
+      +0
+      
+      at Context.<anonymous> (test/karma-test.js:193:16)
+      at processTicksAndRejections (node:internal/process/task_queues:96:5)
+
+
+
