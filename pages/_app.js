@@ -1,9 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import { GlobalContext } from "../components/GlobalContext";
+import { Events } from "../components/Events";
 
 
 function MyApp({ Component, pageProps }) {
 
+    const [event, SetEvent] = useState({
+        type: undefined,
+        eventDate: undefined,
+        message: undefined,
+        data: {}
+    });
     const [globalState, setGlobalState] = useState({
         language: "en",
         apiBaseUrl: process.env.API_BASE_URL,
@@ -15,14 +22,16 @@ function MyApp({ Component, pageProps }) {
 
 
     useEffect(() => {
-        console.log('_app.js global loaded state');
-        console.log('env variable ',process.env.API_BASE_URL)
+        console.log('_app.js global state and Events loaded');
+        console.log('env variable ', process.env.API_BASE_URL)
     }, []);
 
     return (<>
         <GlobalContext.Provider value={{ globalState, setGlobalState }}>
-            <title> Karma  </title>
-            <Component {...pageProps} />
+            <Events.Provider value={{ event, SetEvent }}>
+                <title> Karma  </title>
+                <Component {...pageProps} />
+            </Events.Provider>
         </GlobalContext.Provider>
     </>);
 }

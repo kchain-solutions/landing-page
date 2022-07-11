@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import CustomTheme from "../components/CustomTheme";
 import { GlobalContext } from "../components/GlobalContext";
 import EthereumNavbar from "../components/EthereumNavbar";
+import CampaignFactoryBody from "../components/CampaignFactoryBody";
 
 export default function Ethereum(props) {
 
@@ -22,8 +23,8 @@ export default function Ethereum(props) {
     return <>
         <CustomTheme>
             <EthereumNavbar noLimitFactoryAddress={props.noLimitFactoryAddress} scarsityFactoryAddress={props.scarsityFactoryAddress} />
-            <Typography variant="h3"> Ethereum Demo </Typography>
-            <Typography variant="h5"> WIP </Typography>
+
+            <CampaignFactoryBody />
         </CustomTheme>
     </>;
 }
