@@ -15,7 +15,7 @@ export default function CampaignCardList({ campaignTableStorage }) {
                 console.log('index', index);
                 return (
                     <Grid item xs={12} md={6}  key={index}>
-                        <CampaignCard
+                        <CampaignCard 
                             name={campaignTableStorage[key].name}
                             symbol={campaignTableStorage[key].symbol}
                             campaignAddress={key}

@@ -1,12 +1,15 @@
 import React from "react";
 import { Typography, Box, Grid, Container, Card, CardActionArea, CardMedia, CardContent } from "@mui/material";
+import { useRouter } from "next/router";
 
 
 export default function CampaignCard(props){
 
+    const router = useRouter();
+
     return(
         <>
-            <Card sx={{ width: 400 }}>
+            <Card sx={{ width: 400 }} onClick={event => {router.push('/campaign?campaignAddress='+props?.campaignAddress)}}>
                 <CardActionArea>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">

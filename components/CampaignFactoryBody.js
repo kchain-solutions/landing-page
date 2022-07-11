@@ -6,6 +6,7 @@ import CampaignCardList from "./CampaignCardList";
 
 import CampaignNoLimitBuild from "../build/contracts/CampaignNoLimit.json"
 import CampaignScarsityBuild from "../build/contracts/CampaignScarsity.json"
+import CampaignAddNew from "./CampaignAddNew";
 
 
 export default function CampaignFactoryBody() {
@@ -82,7 +83,7 @@ export default function CampaignFactoryBody() {
                         <CampaignCardList campaignTableStorage={localState.campaignTableStorage} />
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Typography> Button placeholder</Typography>
+                        <CampaignAddNew />
                     </Grid>
                     <Grid item xs={12} sx={{ display: { sx: 'flex', md: "none" } }}>
                         <CampaignCardList campaignTableStorage={localState.campaignTableStorage} />
