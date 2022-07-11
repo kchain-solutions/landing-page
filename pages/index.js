@@ -1,71 +1,42 @@
+import { Typography } from "@mui/material";
 import React, { useState, useEffect, useContext } from "react";
-import { GlobalContext } from "../components/GlobalContext";
 import CustomTheme from "../components/CustomTheme";
-import Navbar from "../components/Navbar";
-import Body from "../components/BodyLandingPage";
-import lang from "../lang/index.json"
+import { GlobalContext } from "../components/GlobalContext";
+import EthereumNavbar from "../components/EthereumNavbar";
+import CampaignFactoryBody from "../components/CampaignFactoryBody";
 
-import { Container } from "@mui/system";
-
-const axios = require('axios').default;
-
-function Index(props) {
+export default function Ethereum(props) {
 
     const [localState, setLocalState] = useState({
 
     });
     const { globalState, setGlobalState } = useContext(GlobalContext);
 
-    // const axiosCall = async (url) => {
-    //     try {
-    //         let response = await axios.get(url);
-    //         console.log(response.data);
-    //         setLocalState({
-    //             ...localState,
-    //             axiosData: response.data
-    //         });
-
-    //     } catch (error) {
-    //         console.log('indexjs error', error)
-    //     }
-
-    // }
     useEffect(() => {
-        setLocalState({
-            ...localState,
-            service1: lang[globalState.language]["service1"]
-        });
-
-        setGlobalState({...globalState, 
-            currentPage: 'index.js',
-            baseUrl: props.baseUrl
+        setGlobalState({
+            ...globalState,
+            currentPage: "ethereum.js"
         })
-
-        console.log('Index page loaded');
-        // console.log('apiBaseUrl', props.url);
-        // axiosCall(props.url + '/api/hello')
+        globalState.web3;
     }, []);
 
-    return (
-        <>
-            <CustomTheme>
-                <Navbar baseUrl={props.baseUrl}/>
-                <Body />
-                {globalState?.baseUrl}
-            </CustomTheme>
-        </>);
+    return <>
+        <CustomTheme>
+            <EthereumNavbar noLimitFactoryAddress={props.noLimitFactoryAddress} scarsityFactoryAddress={props.scarsityFactoryAddress} />
+            <CampaignFactoryBody />
+        </CustomTheme>
+    </>;
 }
 
-
-
-export default Index
-
 export async function getStaticProps() {
-    const baseUrl = process.env.API_BASE_URL 
-    return{
+    const baseUrl = process.env.API_BASE_URL;
+    const noLimitFactoryAddress = process.env.CAMPAIGN_NOLIMIT_FACTORY_RINKEBY;
+    const scarsityFactoryAddress = process.env.CAMPAIGN_SCARSITY_FACTORY_RINKEBY;
+    return {
         props: {
-            baseUrl
+            baseUrl,
+            noLimitFactoryAddress,
+            scarsityFactoryAddress
         }
     }
-  }
-  
+}

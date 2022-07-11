@@ -92,7 +92,7 @@ export default function CampaignFactoryBody() {
         );
     }
     else {
-        return (<Typography variant="h1">Connect your wallet!</Typography>);
+        return (<Typography variant="h4">Connect your wallet!</Typography>);
     }
 
 }
