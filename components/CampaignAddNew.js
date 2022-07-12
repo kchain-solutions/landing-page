@@ -20,8 +20,8 @@ export default function CampaignAddNew(props) {
             <Tab label="No Limit Campaign" />
             <Tab label="Scarsity Campaign" />
         </Tabs>
-        <TabPanel value={value} index={0}> Panel 1</TabPanel>
-        <TabPanel value={value} index={1}> Panel 2 </TabPanel>
+        <TabPanel value={value} index={0}>  <NewNoLimitCampaign /> </TabPanel>
+        <TabPanel value={value} index={1}> <NewScarsityCampaign /> </TabPanel>
     </>);
 }
 
