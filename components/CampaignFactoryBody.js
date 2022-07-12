@@ -7,6 +7,7 @@ import CampaignCardList from "./CampaignCardList";
 import CampaignNoLimitBuild from "../build/contracts/CampaignNoLimit.json"
 import CampaignScarsityBuild from "../build/contracts/CampaignScarsity.json"
 import CampaignAddNew from "./CampaignAddNew";
+const Web3 = require('Web3');
 
 
 export default function CampaignFactoryBody() {
@@ -38,9 +39,11 @@ export default function CampaignFactoryBody() {
             let name = await campaignNoLimitInstance.methods.name().call();
             let symbol = await campaignNoLimitInstance.methods.symbol().call();
             let owner = await campaignNoLimitInstance.methods.admin().call();
+            let productPrice = await campaignNoLimitInstance.methods.productPrice().call();
+            productPrice = Web3.utils.fromWei(productPrice, "ether");
             let type = 'NoLimit';
             let remaningOffers = await campaignNoLimitInstance.methods.remaningOffers().call();
-            tmpObj = { name, symbol, owner, type, remaningOffers }
+            tmpObj = { name, symbol, owner, type, remaningOffers, productPrice }
             campaignTableStorage[address] = tmpObj;
         }
         console.log('campaign data loaded ', campaignTableStorage);
@@ -67,7 +70,7 @@ export default function CampaignFactoryBody() {
     }, [globalState]);
 
     useEffect(() => {
-        if (event.type = "newCampaign") {
+        if (event.type = "newCampaignCreated") {
             if (globalState?.isConnected) {
                 loadData(globalState.web3, globalState.CampaignNoLimitFactoryInstance);
             }

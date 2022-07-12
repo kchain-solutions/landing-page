@@ -19,6 +19,7 @@ export default function CampaignCard(props){
                         <Typography variant="body2" color="text.secondary"> <b>Owner: </b> {props.owner}  </Typography>
                         <Typography variant="body2" color="text.secondary"> <b>Type: </b>{props.type}  </Typography>
                         <Typography variant="body2" color="text.secondary"> <b>Remaning offers:</b> {props.remaningOffers}  </Typography>
+                        <Typography variant="body2" color="text.secondary"> <b>Product price:</b> {props.productPrice} ETH </Typography>
                     </CardContent>
                 </CardActionArea>
             </Card>

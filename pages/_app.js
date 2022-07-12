@@ -5,7 +5,7 @@ import { Events } from "../components/Events";
 
 function MyApp({ Component, pageProps }) {
 
-    const [event, SetEvent] = useState({
+    const [event, setEvent] = useState({
         type: undefined,
         eventDate: undefined,
         message: undefined,
@@ -28,7 +28,7 @@ function MyApp({ Component, pageProps }) {
 
     return (<>
         <GlobalContext.Provider value={{ globalState, setGlobalState }}>
-            <Events.Provider value={{ event, SetEvent }}>
+            <Events.Provider value={{ event, setEvent }}>
                 <title> Karma  </title>
                 <Component {...pageProps} />
             </Events.Provider>

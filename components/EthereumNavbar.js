@@ -19,7 +19,7 @@ export default function EthereumNavbar(props) {
         stateSession['CampaignNoLimitFactoryInstance'] = factoryInstances['CampaignNoLimitFactoryInstance'];
         stateSession['CampaignScarsityFactoryInstance'] = factoryInstances['CampaignScarsityFactoryInstance'];
         console.log('Loaded state', stateSession)
-        setGlobalState(stateSession);
+        setGlobalState({...globalState, ...stateSession});
     }
 
     useEffect(() => {
@@ -48,7 +48,6 @@ export default function EthereumNavbar(props) {
                 web3: web3,
                 CampaignNoLimitFactoryInstance: factoryInstances['CampaignNoLimitFactoryInstance'],
                 CampaignScarsityFactoryInstance: factoryInstances['CampaignScarsityFactoryInstance']
-
             }
             setGlobalState(
                 {
