@@ -44,8 +44,7 @@ export default function campaign(props) {
         return (<>
             <CustomTheme>
                 <EthereumNavbar noLimitFactoryAddress={props.noLimitFactoryAddress} scarsityFactoryAddress={props.scarsityFactoryAddress} />
-                <CampaignNoLimitBody noLimitCampaignInstance={noLimitCampaignInstance} wallet={globalState.wallet} />
-                <Typography> {campaignAddress} {campaignType} </Typography>
+                <CampaignNoLimitBody noLimitCampaignInstance={noLimitCampaignInstance} wallet={globalState.wallet} campaignAddress={campaignAddress}/>
             </CustomTheme>
         </>);
     }
