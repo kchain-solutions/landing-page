@@ -9,7 +9,7 @@ export default function CampaignCard(props){
 
     return(
         <>
-            <Card sx={{ width: 400 }} onClick={event => {router.push('/campaign?campaignAddress='+props?.campaignAddress)}}>
+            <Card sx={{ width: 400 }} onClick={event => {router.push('/campaign?campaignAddress='+props?.campaignAddress+'&campaignType='+props?.type)}}>
                 <CardActionArea>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
