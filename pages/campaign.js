@@ -34,8 +34,6 @@ export default function campaign(props) {
     }
 
     useEffect(() => {
-        console.log(globalState.wallet);
-        console.log(globalState.web3);
         setContractInstance(globalState.web3);
         console.log('noLimitCampaignInstance', noLimitCampaignInstance);
     }, []);
@@ -44,7 +42,11 @@ export default function campaign(props) {
         return (<>
             <CustomTheme>
                 <EthereumNavbar noLimitFactoryAddress={props.noLimitFactoryAddress} scarsityFactoryAddress={props.scarsityFactoryAddress} />
-                <CampaignNoLimitBody noLimitCampaignInstance={noLimitCampaignInstance} wallet={globalState.wallet} campaignAddress={campaignAddress}/>
+                <CampaignNoLimitBody 
+                noLimitCampaignInstance={noLimitCampaignInstance} 
+                wallet={globalState.wallet} 
+                campaignAddress={campaignAddress} 
+                web3={globalState.web3}/>
             </CustomTheme>
         </>);
     }
