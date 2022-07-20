@@ -4,3 +4,5 @@ Type of events:
 - newCampaignCreated
 - nftMinted
 - nftTransfered
+- tokenIdSelected
+- Payment

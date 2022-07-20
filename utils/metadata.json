@@ -1,0 +1,18 @@
+{
+    "title": "Asset Metadata",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "KRM NFT"
+        },
+        "description": {
+            "type": "string",
+            "description": "Describes the asset to which this NFT represents"
+        },
+        "image": {
+            "type": "string",
+            "description": "QmRSqe3mAMHYmreieRPmAwGtmLtkSX2zYykqstinbqXNUL"
+        }
+    }
+}

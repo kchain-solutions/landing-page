@@ -5,7 +5,7 @@ import { GlobalContext } from "../components/GlobalContext";
 import EthereumNavbar from "../components/EthereumNavbar";
 import CampaignFactoryBody from "../components/CampaignFactoryBody";
 
-export default function Ethereum(props) {
+export default function Index(props) {
 
     const [localState, setLocalState] = useState({
 
@@ -15,10 +15,14 @@ export default function Ethereum(props) {
     useEffect(() => {
         setGlobalState({
             ...globalState,
-            currentPage: "ethereum.js"
-        })
-        globalState.web3;
+            currentPage: "index.js"
+        });
+        
     }, []);
+
+    useEffect(() => {
+        console.log("ipfs instance", props.ipfsInstance);
+    }, [props]);
 
     return <>
         <CustomTheme>

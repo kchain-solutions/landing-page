@@ -5,14 +5,14 @@ import CustomTheme from "../components/CustomTheme";
 import { GlobalContext } from "../components/GlobalContext";
 import EthereumNavbar from "../components/EthereumNavbar";
 import CampaignNoLimitBody from "../components/nolimit/CampaignNoLimitBody";
- import CampaignScarsityBody from "../components/scarsity/CampaignScarsityBody";
+import CampaignScarsityBody from "../components/scarsity/CampaignScarsityBody";
 import CampaignNoLimitBuild from "../build/contracts/CampaignNoLimit.json"
 import CampaignScarsityBuild from "../build/contracts/CampaignScarsity.json"
 import Web3 from "web3";
 
 export default function campaign(props) {
 
-    const {globalState, setGlobalState} = useContext(GlobalContext)
+    const { globalState, setGlobalState } = useContext(GlobalContext)
     const [noLimitCampaignInstance, setNoLimitCampaignInstance] = useState(undefined);
     const [scarsityCampaignInstance, setScarsityCampaignInstance] = useState(undefined);
     const [wallet, setWallet] = useState('');
@@ -23,11 +23,11 @@ export default function campaign(props) {
     const setContractInstance = async (web3) => {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-        if(campaignType?.toLowerCase() === 'nolimit'){
+        if (campaignType?.toLowerCase() === 'nolimit') {
             let noLCInstance = await new web3.eth.Contract(CampaignNoLimitBuild.abi, campaignAddress);
             setNoLimitCampaignInstance(noLCInstance);
         }
-        if(campaignType?.toLowerCase()==='scarsity'){
+        if (campaignType?.toLowerCase() === 'scarsity') {
             let noScInstance = await new web3.eth.Contract(CampaignScarsityBuild.abi, campaignAddress);
             setScarsityCampaignInstance(noScInstance);
         }
@@ -42,11 +42,11 @@ export default function campaign(props) {
         return (<>
             <CustomTheme>
                 <EthereumNavbar noLimitFactoryAddress={props.noLimitFactoryAddress} scarsityFactoryAddress={props.scarsityFactoryAddress} />
-                <CampaignNoLimitBody 
-                noLimitCampaignInstance={noLimitCampaignInstance} 
-                wallet={globalState.wallet} 
-                campaignAddress={campaignAddress} 
-                web3={globalState.web3}/>
+                <CampaignNoLimitBody
+                    noLimitCampaignInstance={noLimitCampaignInstance}
+                    wallet={globalState.wallet}
+                    campaignAddress={campaignAddress}
+                    web3={globalState.web3} />
             </CustomTheme>
         </>);
     }

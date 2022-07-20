@@ -1,29 +1,34 @@
 import { Typography, Select, MenuItem, menuItemClasses } from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
+import { Events } from "../Events";
 
-export default function TokenSelector({tokenList, tokenSelected, setTokenSelected}){
+export default function TokenSelector({tokenList}){
     
-
-    const [menuItems, setMenuItems] = useState(undefined);
+    const {event, setEvent} = useContext(Events);
+    const [menuItems, setMenuItems] = useState('');
+    const [valueS, setValueS] = useState('');
 
     const handleChange = (e) => {
         const { name, value } =  e.target;
-        setTokenSelected(value);
+        setValueS(value);
+        setEvent({type: 'tokenIdSelected', value});
+        console.log('tokenList', tokenList);
     };
 
     useEffect(() => {
-        let items = tokenList.map((num) => {return (<><MenuItem value={num}>{num}</MenuItem></>)});
+        console.log('token list updated', tokenList);
+        let items = tokenList.map((num) => {return (<MenuItem key={num} name="token-selector-item" value={num.toString()}>{num.toString()}</MenuItem>)});
         setMenuItems(items);
     }, [tokenList]);
     
     return (<> 
          <Select
-            labelId="token-selector"
-            id="demo-simple-select"
-            value={tokenSelected}
-            label="NFT ids"
+            value={valueS}
+            label="nft"
             onChange={handleChange}
+            sx={{width:'100%', mt:'1rem'}}
         >
+          <MenuItem value=''> None </MenuItem>
             {menuItems}
   </Select>
     </>);

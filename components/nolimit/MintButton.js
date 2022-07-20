@@ -25,7 +25,7 @@ export default function MintButton({ noLimitCampaignInstance, wallet }) {
     return (
         <>
             {nftStatus?.alertMessage}
-            <Button onClick={handleSubmit}>Mint NFT</Button>
+            <Button variant="contained" onClick={handleSubmit}>Mint NFT</Button>
         </>
     );
 }

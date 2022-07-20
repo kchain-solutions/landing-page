@@ -22,7 +22,7 @@ export default function Description({ noLimitCampaignInstance, wallet, campaignA
                         <Typography variant="body2" color="text.secondary"> <b>Type: </b>{campaignData.type}  </Typography>
                         <Typography variant="body2" color="text.secondary"> <b>Remaning offers:</b> {campaignData.remaningOffers}  </Typography>
                         <Typography variant="body2" color="text.secondary"> <b>Product price:</b> {campaignData.productPrice} ETH </Typography>
-                        <Typography variant="body2" color="text.secondary"> <b>Contract balance:</b> {campaignData.contractBalance} ETH </Typography>
+                        <Typography variant="body2" color="text.secondary"> <b>Admin balance:</b> {campaignData.adminBalance} ETH </Typography>
                     </CardContent>
             </Card>
         </>
