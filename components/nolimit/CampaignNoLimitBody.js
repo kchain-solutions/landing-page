@@ -27,6 +27,7 @@ export default function CampaignNoLimitBody({ noLimitCampaignInstance, wallet, c
         let remaningOffers = await noLimitCampaignInstance.methods.remaningOffers().call();
         let adminBalance = await noLimitCampaignInstance.methods.adminBalance().call();;
         adminBalance = Web3.utils.fromWei(adminBalance.toString(), "ether");
+        
         let tmpObj = { name, symbol, owner, type, remaningOffers, productPrice, campaignAddress, adminBalance };
         console.log('tmpObj', tmpObj);
         setCampaignData(tmpObj);

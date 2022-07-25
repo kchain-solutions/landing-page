@@ -48,7 +48,8 @@ export default function CampaignFactoryBody() {
             productPrice = Web3.utils.fromWei(productPrice, "ether");
             let type = 'NoLimit';
             let remaningOffers = await campaignNoLimitInstance.methods.remaningOffers().call();
-            tmpObj = { name, symbol, owner, type, remaningOffers, productPrice }
+            let uri = await campaignNoLimitInstance.methods.URI().call();
+            tmpObj = { name, symbol, owner, type, remaningOffers, productPrice, uri }
             campaignTableStorage[address] = tmpObj;
         }
         

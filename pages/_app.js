@@ -3,6 +3,7 @@ import { GlobalContext } from "../components/GlobalContext";
 import { Events } from "../components/Events";
 
 
+
 function MyApp({ Component, pageProps }) {
 
     const [event, setEvent] = useState({
@@ -26,7 +27,6 @@ function MyApp({ Component, pageProps }) {
     useEffect(() => {
         console.log('_app.js global state and Events loaded');
         console.log('env variable ');
-        
     }, []);
 
     return (<>

@@ -23,6 +23,7 @@ export default function CampaignCardList({ campaignTableStorage }) {
                             type={campaignTableStorage[key].type}
                             remaningOffers={campaignTableStorage[key].remaningOffers}
                             productPrice={campaignTableStorage[key].productPrice}
+                            uri={campaignTableStorage[key].uri}
                         />
                     </Grid>
                 );

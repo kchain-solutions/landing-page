@@ -3,7 +3,7 @@ import { Button, Alert } from "@mui/material";
 import { Events } from "../Events.js";
 
 
-export default function MintButton({ noLimitCampaignInstance, wallet }) {
+export default function MintButton({ noLimitCampaignInstance, wallet, updateTokenList, dispatcher }) {
 
     const [nftStatus, setNftStatus] = useState({ alertMessage: '' });
     const { event, setEvent } = useContext(Events);
@@ -16,6 +16,8 @@ export default function MintButton({ noLimitCampaignInstance, wallet }) {
             setEvent({
                 type: 'nftMinted'
             });
+            updateTokenList();
+            dispatcher({type:'MINT'});
         } catch (error) {
             setNftStatus({ alertMessage: <Alert severity="error"> Minting error </Alert> });
         }
