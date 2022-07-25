@@ -121,7 +121,11 @@ export default function ({ noLimitCampaignInstance, wallet, campaignData }) {
 
     return (<> <Container>
         <Grid container spacing={2}>
+        <Grid item>
+            <Typography variant="h5"> Token operation </Typography>
+        </Grid>
             {tokenItems}
+            {CashOut}
             <Grid item xs={12}>
                 <MintButton
                     noLimitCampaignInstance={noLimitCampaignInstance}

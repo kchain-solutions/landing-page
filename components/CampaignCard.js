@@ -24,7 +24,7 @@ export default function CampaignCard(props) {
                 />);
             }
         } catch (error) {
-            console.log('axios error ', error);
+            console.error('axios error ', error);
         }
 
     }
@@ -49,7 +49,7 @@ export default function CampaignCard(props) {
                     <Typography variant="body2" color="text.secondary"> <b>Product price:</b> {props.productPrice} ETH </Typography>
                 </CardContent>
                 <CardActionArea>
-                    <Typography variant="h6"> <b> Open contract </b></Typography>
+                    <Typography variant="h6" sx={{ml:'1rem', mb:'1rem'}}> CONTRACT DETAILS </Typography>
                 </CardActionArea>
             </Card>
         </>

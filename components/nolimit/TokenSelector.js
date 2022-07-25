@@ -1,4 +1,5 @@
-import { Typography, Select, MenuItem, menuItemClasses } from "@mui/material";
+import { Typography, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import { width } from "@mui/system";
 import React, { useContext, useEffect, useState } from "react";
 import { Events } from "../Events";
 
@@ -23,13 +24,18 @@ export default function TokenSelector({ tokenList, dispatcher }) {
     }, [tokenList]);
 
     return (<>
+    <FormControl sx={{width: '100%'}}>
+    <InputLabel id="select-label" sx={{mt:'1rem'}}> Select token ID</InputLabel>
         <Select
             value={valueS}
-            label="nft"
             onChange={(handleChange)}
+            labelId="select-label"
+            label="Select token ID"
             sx={{ width: '100%', mt: '1rem' }}
-        >
+        >   
+        
             {menuItems}
         </Select>
+        </FormControl>
     </>);
 }

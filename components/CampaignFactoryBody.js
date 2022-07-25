@@ -93,8 +93,6 @@ export default function CampaignFactoryBody() {
             console.log('searchValue', searchValue);
         }
         setLocalState({ campaignTableStorage });
-
-
     }
 
     useEffect(() => {
