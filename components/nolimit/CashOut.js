@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Button, Alert } from "@mui/material";
-import { UndoRounded } from "@mui/icons-material";
 
-export default function CashOut({ noLimitCampaignInstance, wallet, campaignData }) {
+export default function CashOut({ noLimitCampaignInstance, wallet, campaignData, dispatcher }) {
 
     const [alertMessage, setAlertMessage] = useState('');
+
+    useEffect((
+    ) => {
+        console.log('Cashout button loading');
+    }, []);
 
     const handleClick = async () => {
         setAlertMessage(<Alert severity="info"> Cashout transaction sent to the blockchain. Waiting for the confirmation</Alert>);
         try {
-            await noLimitCampaignInstance.methods.payWithNft().send({ from: wallet });
+            await noLimitCampaignInstance.methods.cashOut().send({ from: wallet });
             setAlertMessage(<Alert severity="success"> Cashout transaction succeed</Alert>);
+            dispatcher({type:'PAYED'});
         } catch (error) {
             console.log('Payment button error ', error);
             setAlertMessage(<Alert severity="error"> Cashout transaction error</Alert>);

@@ -12,42 +12,41 @@ export default function CampaignNoLimitBody({ noLimitCampaignInstance, wallet, c
 
     const [cashOut, setCashOut] = useState(undefined);
     const [pay, setPay] = useState();
-    const [campaignData, setCampaignData] = useState(undefined);
+    const [campaignData, setCampaignData] = useState(undefined)
+    const [realodCampaignData, setReloadCampaignData] = useState(false);
 
     const { event, setEvent } = useContext(Events);
     const { globalState, setGlobalState } = useContext(GlobalContext);
 
     const loadCampaignData = async (noLimitCampaignInstance) => {
-        let name = await noLimitCampaignInstance.methods.name().call();
-        let symbol = await noLimitCampaignInstance.methods.symbol().call();
-        let owner = await noLimitCampaignInstance.methods.admin().call();
-        let productPrice = await noLimitCampaignInstance.methods.productPrice().call();
-        productPrice = Web3.utils.fromWei(productPrice, "ether");
-        let type = 'NoLimit';
-        let remaningOffers = await noLimitCampaignInstance.methods.remaningOffers().call();
-        let adminBalance = await noLimitCampaignInstance.methods.adminBalance().call();;
-        adminBalance = Web3.utils.fromWei(adminBalance.toString(), "ether");
-        
-        let tmpObj = { name, symbol, owner, type, remaningOffers, productPrice, campaignAddress, adminBalance };
-        console.log('tmpObj', tmpObj);
-        setCampaignData(tmpObj);
-        if (owner == wallet) {
-            setCashOut(<> <Grid item xs={12} md={6}> <CashOut noLimitCampaignInstance={noLimitCampaignInstance} wallet={wallet} /> </Grid> </>)
-        }
+        //if (realodCampaignData) {
+            let name = await noLimitCampaignInstance.methods.name().call();
+            let symbol = await noLimitCampaignInstance.methods.symbol().call();
+            let owner = await noLimitCampaignInstance.methods.admin().call();
+            let productPrice = await noLimitCampaignInstance.methods.productPrice().call();
+            productPrice = Web3.utils.fromWei(productPrice, "ether");
+            let type = 'NoLimit';
+            let remaningOffers = await noLimitCampaignInstance.methods.remaningOffers().call();
+            let adminBalance = await noLimitCampaignInstance.methods.adminBalance().call();;
+            adminBalance = Web3.utils.fromWei(adminBalance.toString(), "ether");
+
+            let tmpObj = { name, symbol, owner, type, remaningOffers, productPrice, campaignAddress, adminBalance };
+            console.log('tmpObj', tmpObj);
+            setCampaignData(tmpObj);
+            setReloadCampaignData(false);
+        //}
+
     }
 
     useEffect(() => {
-        console.log('noLimitCampaignInstance', noLimitCampaignInstance);
+        setReloadCampaignData(true);
         loadCampaignData(noLimitCampaignInstance);
-
     }, [noLimitCampaignInstance]);
 
-    useContext(() => {
-        if (event.type === 'payment') {
-            console.log('Payment received updating campaign data');
-            loadCampaignData(noLimitCampaignInstance);
-        }
-    }, [event])
+    // useContext(() => {
+    //     console.log('Realod Campaign data');
+    //     loadCampaignData(noLimitCampaignInstance);
+    // }, [realodCampaignData])
 
     if (globalState.isConnected) {
         if (campaignData) {
@@ -67,7 +66,7 @@ export default function CampaignNoLimitBody({ noLimitCampaignInstance, wallet, c
             return (<><Typography variant="h5"> Loading ...</Typography></>);
         }
     }
-    else{
+    else {
         return (<><Typography variant="h5"> Connect the wallet ...</Typography></>);
     }
 }

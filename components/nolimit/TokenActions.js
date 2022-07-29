@@ -15,7 +15,7 @@ function reducer(state, action) {
             if (action.tokenList)
                 if (action.tokenList.length > 0)
                     return { ...state, tokenList: action.tokenList, tokenSelected: action.tokenSelected };
-            return {...state};
+            return { ...state };
 
         case 'TOKEN_SELECTED':
             console.log('Reducer token selected', action.tokenSelected);
@@ -23,18 +23,18 @@ function reducer(state, action) {
 
         case 'TOKEN_TRANSFERED':
             console.log('Reducer token transfered');
-            return {...state};
+            return { ...state };
 
         case 'PAYED':
             console.log('Reducer payed');
-            return {...state};
+            return { ...state };
 
         case 'MINT':
             console.log('Reducer mint');
-            return {...state};
+            return { ...state };
 
         default:
-            throw new Error();
+            state;
 
     }
 }
@@ -42,7 +42,6 @@ function reducer(state, action) {
 export default function ({ noLimitCampaignInstance, wallet, campaignData }) {
 
     const { event, setEvent } = useContext(Events);
-    const [tokenSelected, setTokenSelected] = useState('');
     const [tokenList, setTokenList] = useState([]);
     const [tokenItems, setTokenItems] = useState(undefined);
     const [cashOutItem, setCashOutItem] = useState(undefined);
@@ -52,12 +51,12 @@ export default function ({ noLimitCampaignInstance, wallet, campaignData }) {
         tokenList: []
     }
 
-    const loadTokenList = async (noLimitCampaignInstance) => {
-        let validNFTs = await initialState.noLimitCampaignInstance.methods.getValidNFTs().call({ from: wallet });
-        console.log('valid NFT', validNFTs);
-        setTokenList(validNFTs);
-        initialState.tokenList = validNFTs;
-    }
+    // const loadTokenList = async (noLimitCampaignInstance) => {
+    //     let validNFTs = await initialState.noLimitCampaignInstance.methods.getValidNFTs().call({ from: wallet });
+    //     console.log('valid NFT', validNFTs);
+    //     setTokenList(validNFTs);
+    //     initialState.tokenList = validNFTs;
+    // }
 
     const updateTokenList = async () => {
         let validNFTs = await noLimitCampaignInstance.methods.getValidNFTs().call({ from: wallet });
@@ -105,14 +104,15 @@ export default function ({ noLimitCampaignInstance, wallet, campaignData }) {
 
     useEffect(() => {
         updateTokenList(noLimitCampaignInstance);
+        console.log('campaign owner', campaignData.owner, 'wallet connected', wallet)
         if (campaignData.owner === wallet) {
             setCashOutItem(<>
                 <Grid item xs={12}>
                     <CashOut
                         noLimitCampaignInstance={noLimitCampaignInstance}
                         wallet={wallet}
-                        tokenSelected={tokenSelected}
                         campaignData={campaignData}
+                        sx={{ color: '#870e05' }}
                     />
                 </Grid>
             </>);
@@ -121,11 +121,10 @@ export default function ({ noLimitCampaignInstance, wallet, campaignData }) {
 
     return (<> <Container>
         <Grid container spacing={2}>
-        <Grid item>
-            <Typography variant="h5"> Token operation </Typography>
-        </Grid>
+            <Grid item>
+                <Typography variant="h5"> Token operation </Typography>
+            </Grid>
             {tokenItems}
-            {CashOut}
             <Grid item xs={12}>
                 <MintButton
                     noLimitCampaignInstance={noLimitCampaignInstance}
@@ -133,6 +132,7 @@ export default function ({ noLimitCampaignInstance, wallet, campaignData }) {
                     updateTokenList={updateTokenList}
                     dispatcher={dispatcher} />
             </Grid>
+            {cashOutItem}
         </Grid>
     </Container>
     </>);
